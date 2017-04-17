@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 
 const getAccessToken = require('./utilities/access_token')
+const getBarsByLocation = require('./utilities/search.js')
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,7 +14,11 @@ app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
 
 getAccessToken(process.env.CLIENT_ID,process.env.CLIENT_SECRET)
-  .then((result) => console.log(result.access_token))
+  .then((result) => {
+    const ACCESS_TOKEN = result.access_token
+    getBarsByLocation(ACCESS_TOKEN, '79416')
+      .then((results) => console.log(results))
+  })
   .catch(error => console.error(error))
 
 // Answer API requests.

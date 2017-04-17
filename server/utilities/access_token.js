@@ -1,4 +1,4 @@
-const request = require("request");
+const request = require('request');
 
 const getAccessToken = (CLIENT_ID, CLIENT_SECRET) => {
     return new Promise((resolve, reject) => {

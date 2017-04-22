@@ -6,9 +6,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      bars: [],
+      zip: '',
       message: null,
       fetching: true
     };
+    this.getBars = this.getBars.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount() {
@@ -25,6 +29,36 @@ class App extends Component {
           fetching: false
         });
       }).catch(e => {
+        this.setState({
+          message: `API call failed: ${e}`,
+          fetching: false
+        });
+      })
+  }
+
+  handleChange(event) {
+    this.setState({ zip: event.target.value })
+  }
+
+  getBars(event) {
+    this.setState({ bars: [], zip: '' })
+    event.preventDefault()
+
+    fetch('/api/79416')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`status ${response.status}`)
+        }
+        return response.json()
+      })
+      .then(json => {
+        console.log(json)
+        this.setState({
+          bars: json.businesses,
+          fetching: false
+        })
+      })
+      .catch(e => {
         this.setState({
           message: `API call failed: ${e}`,
           fetching: false
@@ -50,6 +84,22 @@ class App extends Component {
             ? 'Fetching message from API'
             : this.state.message}
         </p>
+
+        <form onSubmit={this.getBars}>
+          <label>
+            Location:
+              <input type='text' value={this.state.zip} onChange={this.handleChange} />
+          </label>
+          <input type='submit' value='Submit' />
+        </form>
+
+        <ul>
+          {(this.state.bars.length > 0) 
+            ? 
+              this.state.bars.map((bar, idx) => <li key={idx}>{bar.name}</li>)
+            : 
+              <li>False</li>}
+        </ul>
       </div>
     );
   }

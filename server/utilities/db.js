@@ -44,6 +44,57 @@ DB.prototype.close = () => {
     }
 }
 
+DB.prototype.addDocument = (coll, document) => {
+    let _this = this
+    return new Promise((resolve, reject) => {
+        _this.db.collection(coll, {strict: false}, (error, collection) => {
+            if (error) {
+                console.log('Could not access the collection: ' + error.message)
+                reject(error.message)
+            } else {
+                collection.insert(document, {w: 'majority'})
+                    .then(result => resolve(), (err) => {
+                        console.log('Insert failed: ' + err.message)
+                        reject(err.message)
+                    })
+            }
+        })
+    })
+}
+
+DB.prototype.updateDocument = (coll, document) => {
+    let _this = this
+    return new Promise((resolve, reject) => {
+        _this.db.collection(coll, {strict: false}, (error, collection) => {
+            if (error) {
+                console.log('Could not access the collection: ' + error.message)
+                reject(error.message)
+            } else {
+                collection.updateOne(
+                    {
+                         bar_id: document.bar_id,
+                         numAttendees: {$gte: 0}
+                    },
+                    { $inc: { numAttendees: document.value } }
+                )
+                    .then(() => {
+                        collection.updateOne(
+                            {
+                                bar_id: document.bar_id,
+                                numAttendees: {$lt: 0}
+                            },
+                            { $set: { numAttendees: 0 } }
+                        )
+                    })
+                    .then(() => resolve(), (err) => {
+                        console.log('Update failed: ' + err.message)
+                        reject(err.message)
+                    })
+            }
+        })
+    })
+}
+
 DB.prototype.countDocuments = (coll) => {
     let _this = this
 

@@ -64,12 +64,36 @@ router.get('/:location', (req, res, next) => {
     })
 })
 
+router.post('/attendance', (req, res, next) => {
+    return new Promise((resolve, reject) => {
+        const attendanceObject = {
+            bar_id: req.query.id,
+            value: parseInt(req.query.value)
+        }
+        console.log(attendanceObject)
+        
+        if (!attendanceObject.bar_id || !attendanceObject.value) {
+            reject('Error: Missing query information for bar ID and whether attending is true or false.')
+        } else {
+            let database = new DB
+            
+            database.connect(process.env.MONGO_URI)
+                .then(() => database.updateDocument('active_bars', attendanceObject))
+                .then(() => {
+                    // database.close()
+                    resolve(res.json({ 'message': 'Document updated' }))
+                })
+                .catch(err => console.log('Failed to update the document: ' + err))
+        }
+    })
+})
+
 router.post('/countDocs', (req, res, next) => {
     let requestBody = req.body
     let database = new DB
 
     database.connect(process.env.MONGO_URI)
-        .then(() => database.countDocuments('bars'))
+        .then(() => database.countDocuments('active_bars'))
         .then((count) => {
                 return {
                     'success': true,
@@ -86,7 +110,7 @@ router.post('/countDocs', (req, res, next) => {
             }
         )
         .then((resultObject) => {
-            database.close()
+            // database.close()
             res.json(resultObject)
         })
 })

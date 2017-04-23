@@ -70,7 +70,6 @@ router.post('/attendance', (req, res, next) => {
             bar_id: req.query.id,
             value: parseInt(req.query.value)
         }
-        console.log(attendanceObject)
         
         if (!attendanceObject.bar_id || !attendanceObject.value) {
             reject('Error: Missing query information for bar ID and whether attending is true or false.')
@@ -81,7 +80,8 @@ router.post('/attendance', (req, res, next) => {
                 .then(() => database.updateDocument('active_bars', attendanceObject))
                 .then(() => {
                     // database.close()
-                    resolve(res.json({ 'message': 'Document updated' }))
+                    database.findDocuments('active_bars')
+                        .then(docs => resolve(res.json(docs)))
                 })
                 .catch(err => console.log('Failed to update the document: ' + err))
         }

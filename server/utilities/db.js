@@ -44,6 +44,31 @@ DB.prototype.close = () => {
     }
 }
 
+DB.prototype.findDocuments = (coll) => {
+    let _this = this
+
+    return new Promise((resolve, reject) => {
+        _this.db.collection(coll, {strict: false}, (error, collection) => {
+            if (error) {
+                console.log('Could not access collection: ' + error.message)
+                reject(error.message)
+            } else {
+                console.log('coll', coll)
+                let cursor = collection.find({})
+                cursor.toArray((error, docArray) => {
+                    if (error) {
+                        console.log('Error reading from cursor: ' + error.message)
+                        reject(error.message)
+                    } else {
+                        console.log('docs ', docArray)
+                        resolve(docArray)
+                    }
+                })
+            }
+        })
+    })
+}
+
 DB.prototype.addDocument = (coll, document) => {
     let _this = this
     return new Promise((resolve, reject) => {
@@ -75,7 +100,10 @@ DB.prototype.updateDocument = (coll, document) => {
                          bar_id: document.bar_id,
                          numAttendees: {$gte: 0}
                     },
-                    { $inc: { numAttendees: document.value } }
+                    { 
+                        $inc: { numAttendees: document.value }
+                    }, 
+                    { upsert: true }
                 )
                     .then(() => {
                         collection.updateOne(

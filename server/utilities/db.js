@@ -122,23 +122,23 @@ DB.prototype.updateDocument = (coll, document) => {
     })
 }
 
-DB.prototype.countDocuments = (coll) => {
-    let _this = this
+// DB.prototype.countDocuments = (coll) => {
+//     let _this = this
 
-    return new Promise((resolve, reject) => {
-        _this.db.collection(coll, {strict: true}, (error, collection) => {
-            if (error) {
-                console.log('Could not access collection: ' + error.message)
-                reject(error.message)
-            } else {
-                collection.count()
-                    .then(count => resolve(count), (err) => {
-                        console.log('countDocuments failed: ' + err.message)
-                        reject(err.message)
-                    })
-            }
-        })
-    })
-}
+//     return new Promise((resolve, reject) => {
+//         _this.db.collection(coll, {strict: true}, (error, collection) => {
+//             if (error) {
+//                 console.log('Could not access collection: ' + error.message)
+//                 reject(error.message)
+//             } else {
+//                 collection.count()
+//                     .then(count => resolve(count), (err) => {
+//                         console.log('countDocuments failed: ' + err.message)
+//                         reject(err.message)
+//                     })
+//             }
+//         })
+//     })
+// }
 
 module.exports = DB

@@ -88,31 +88,31 @@ router.post('/attendance', (req, res, next) => {
     })
 })
 
-router.post('/countDocs', (req, res, next) => {
-    let requestBody = req.body
-    let database = new DB
+// router.post('/countDocs', (req, res, next) => {
+//     let requestBody = req.body
+//     let database = new DB
 
-    database.connect(process.env.MONGO_URI)
-        .then(() => database.countDocuments('active_bars'))
-        .then((count) => {
-                return {
-                    'success': true,
-                    'count': count,
-                    'error': ''
-                }
-            }, (err) => {
-                console.log('Failed to count the documents: ' + err)
-                return {
-                    'success': false,
-                    'count': 0,
-                    'error': 'Failed to count the documents: ' + err
-                }
-            }
-        )
-        .then((resultObject) => {
-            // database.close()
-            res.json(resultObject)
-        })
-})
+//     database.connect(process.env.MONGO_URI)
+//         .then(() => database.countDocuments('active_bars'))
+//         .then((count) => {
+//                 return {
+//                     'success': true,
+//                     'count': count,
+//                     'error': ''
+//                 }
+//             }, (err) => {
+//                 console.log('Failed to count the documents: ' + err)
+//                 return {
+//                     'success': false,
+//                     'count': 0,
+//                     'error': 'Failed to count the documents: ' + err
+//                 }
+//             }
+//         )
+//         .then((resultObject) => {
+//             // database.close()
+//             res.json(resultObject)
+//         })
+// })
 
 module.exports = router

@@ -77,10 +77,10 @@ router.post('/attendance', (req, res, next) => {
             let database = new DB
             
             database.connect(process.env.MONGO_URI)
-                .then(() => database.updateDocument('active_bars', attendanceObject))
+                .then(() => database.updateDocument('bars', attendanceObject))
                 .then(() => {
                     // database.close()
-                    database.findDocuments('active_bars')
+                    database.findDocuments('bars')
                         .then(docs => resolve(res.json(docs)))
                 })
                 .catch(err => console.log('Failed to update the document: ' + err))

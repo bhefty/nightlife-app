@@ -53,7 +53,6 @@ DB.prototype.findDocuments = (coll) => {
                 console.log('Could not access collection: ' + error.message)
                 reject(error.message)
             } else {
-                console.log('coll', coll)
                 let cursor = collection.find({})
                 cursor.toArray((error, docArray) => {
                     if (error) {
@@ -113,10 +112,10 @@ DB.prototype.updateDocument = (coll, document) => {
                             },
                             { $set: { numAttendees: 0 } }
                         )
-                    })
-                    .then(() => resolve(), (err) => {
-                        console.log('Update failed: ' + err.message)
-                        reject(err.message)
+                            .then(() => resolve(), (err) => {
+                                console.log('Update failed: ' + err.message)
+                                reject(err.message)
+                            })
                     })
             }
         })

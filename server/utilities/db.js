@@ -59,7 +59,6 @@ DB.prototype.findDocuments = (coll) => {
                         console.log('Error reading from cursor: ' + error.message)
                         reject(error.message)
                     } else {
-                        console.log('docs ', docArray)
                         resolve(docArray)
                     }
                 })

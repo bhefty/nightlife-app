@@ -39,6 +39,13 @@ router.get('/', (req, res, next) => {
     res.json(testObject)
 })
 
+router.get('/activebars', (req, res, next) => {
+    let database = new DB
+        database.connect(process.env.MONGO_URI)
+            .then(() => database.findDocuments('bars'))
+            .then((docs) => res.json(docs))
+})
+
 router.get('/:location', (req, res, next) => {
     return new Promise((resolve, reject) => {
         const location = req.params.location
@@ -63,6 +70,8 @@ router.get('/:location', (req, res, next) => {
         })
     })
 })
+
+
 
 router.post('/attendance', (req, res, next) => {
     return new Promise((resolve, reject) => {

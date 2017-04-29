@@ -1,7 +1,13 @@
-require('dotenv').config()
+// Load prod or test env variables
+if (process.env.NODE_ENV === 'test') {
+  require('dotenv').config({ path: '.env.test' })
+} else {
+  require('dotenv').config()
+}
 
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
 
 const yelp = require('./routes/yelp')
 
@@ -21,3 +27,5 @@ app.get('*', function(request, response) {
 app.listen(PORT, function () {
   console.log(`Listening on port ${PORT}`);
 });
+
+module.exports = app;

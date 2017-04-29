@@ -2,13 +2,14 @@ const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const request = require('request');
+const config = require('config');
 
 const Bar = require('../models/bar');
 const getAccessToken = require('../utilities/access_token');
 
 // Get accessToken from Yelp to use other APIs
 let access_token;
-getAccessToken(process.env.CLIENT_ID, process.env.CLIENT_SECRET)
+getAccessToken(config.CLIENT_ID, config.CLIENT_SECRET)
     .then(token => access_token = token.access_token)
 
 // Restructure the bar information returned from Yelp

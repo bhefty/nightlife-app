@@ -1,0 +1,10 @@
+exports[`Home Home renders without crashing 1`] = `
+<div>
+  <h1>
+    Home!
+  </h1>
+  <p>
+    Welcome to Home!
+  </p>
+</div>
+`;

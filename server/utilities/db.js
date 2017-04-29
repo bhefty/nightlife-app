@@ -50,16 +50,37 @@ DB.prototype.findDocuments = (coll) => {
     return new Promise((resolve, reject) => {
         _this.db.collection(coll, {strict: false}, (error, collection) => {
             if (error) {
-                console.log('Could not access collection: ' + error.message)
+                // console.log('Could not access collection: ' + error.message)
                 reject(error.message)
             } else {
                 let cursor = collection.find({})
                 cursor.toArray((error, docArray) => {
                     if (error) {
-                        console.log('Error reading from cursor: ' + error.message)
+                        // console.log('Error reading from cursor: ' + error.message)
                         reject(error.message)
                     } else {
                         resolve(docArray)
+                    }
+                })
+            }
+        })
+    })
+}
+
+DB.prototype.findDocument = (coll, id) => {
+    let _this = this
+    return new Promise((resolve, reject) => {
+        _this.db.collection(coll, {strict: false}, (error, collection) => {
+            if (error) {
+                console.log('Could not access collection: ' + error.message)
+                reject(error.message)
+            } else {
+                let cursor = collection.findOne({ bar_id: id }, (err, result) => {
+                    if (err) {
+                        console.log('Error reading from cursor: ' + err.message)
+                        reject(err.message)
+                    } else {
+                        resolve(result)
                     }
                 })
             }

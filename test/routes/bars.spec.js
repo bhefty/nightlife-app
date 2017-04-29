@@ -20,6 +20,12 @@ describe('Bars', () => {
         })
     })
 
+    after((done) => {
+        Bar.remove({}, (err) => {
+            done();
+        })
+    })
+
     describe('/GET / Bars', () => {
         it('should retrieve all bars in DB', (done) => {
             let bar1 = new Bar({ bar_id: 'the-loft-lubbock-2', numAttendees: 1 })

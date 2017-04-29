@@ -116,7 +116,3 @@ class App extends Component {
 }
 
 export default App;
-
-//  {/*this.state.bars.map((bar, idx) => {
-                // <li key={idx}>{bar.name} with {bar.numAttendees} people going.</li>
-                // })*/}

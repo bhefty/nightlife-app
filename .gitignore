@@ -3,9 +3,9 @@ node_modules
 npm-debug.log
 
 # Local development
+config/
 *.env
 *.env.test
-config/
 *.dev
 .DS_Store
 

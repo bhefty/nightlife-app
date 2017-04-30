@@ -34,24 +34,19 @@ class Bars extends Component {
         return (
             <div>
                 <span>
-                    <h1>{selectedLocation}</h1>
-                    <select onChange={e => this.handleChange(e.target.value)}
-                            value={selectedLocation}>
-                        <option value='79424'>79424</option>
-                        <option value='10011'>10011</option>
-                    </select>
+                    <h1>{selectedLocation.toUpperCase()}</h1>
                 </span>
                 <p>
                     {lastUpdated &&
                         <span>
                             Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
-                            {' '}
+                            <br/>
                         </span>
                     }
                     {!isFetching &&
                         <a href='#'
                             onClick={this.handleRefreshClick}>
-                            handleRefreshClick
+                            Refresh results
                         </a>
                     }
                 </p>

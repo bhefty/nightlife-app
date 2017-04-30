@@ -36,7 +36,7 @@ class BarItem extends Component {
                             <h3>{bar.name}</h3>
                         </span>
                     </span>
-                    <span className='card-summary'>
+                    <span className='card-summary lead'>
                         <div className='container-rating-price'>
                             <div className='rating'>
                                 <StarRatingComponent 

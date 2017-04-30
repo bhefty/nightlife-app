@@ -8,12 +8,6 @@ import BarItem from './components/BarItem'
 import './Bars.css'
 
 class Bars extends Component {
-    constructor() {
-        super()
-        this.state = {
-            focus: ''
-        }
-    }
     componentDidMount() {
         const { dispatch, selectedLocation } = this.props
         if (selectedLocation.length !== 0) {
@@ -66,7 +60,7 @@ class Bars extends Component {
                                     <BarItem 
                                         key={i}
                                         bar={bar}
-                                        focus={this.state.focus} />
+                                    />
                                 )}
                             </div>
                         </div>

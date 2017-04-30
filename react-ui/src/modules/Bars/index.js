@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { selectLocation, fetchBarsIfNeeded, invalidateLocation } from '../../actions'
+import { fetchBarsIfNeeded, invalidateLocation } from '../../actions'
+
+import BarItem from './components/BarItem'
 
 class Bars extends Component {
     componentDidMount() {
         const { dispatch, selectedLocation } = this.props
-        dispatch(fetchBarsIfNeeded(selectedLocation))
+        if (selectedLocation.length !== 0) {
+            dispatch(fetchBarsIfNeeded(selectedLocation))
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -14,10 +18,6 @@ class Bars extends Component {
             const { dispatch, selectedLocation } = nextProps
             dispatch(fetchBarsIfNeeded(selectedLocation))
         }
-    }
-
-    handleChange = nextLocation => {
-        this.props.dispatch(selectLocation(nextLocation))
     }
 
     handleRefreshClick = e => {
@@ -43,7 +43,7 @@ class Bars extends Component {
                             <br/>
                         </span>
                     }
-                    {!isFetching &&
+                    {!isFetching && !isEmpty &&
                         <a href='#'
                             onClick={this.handleRefreshClick}>
                             Refresh results
@@ -51,11 +51,11 @@ class Bars extends Component {
                     }
                 </p>
                 {isEmpty
-                    ? (isFetching? <h2>Loading...</h2> : <h2>Empty.</h2>)
+                    ? (isFetching? <h2>Loading...</h2> : <h2>Please search for a location to meet</h2>)
                     : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
                             <ul>
-                                {bars.map((bar, i) => 
-                                    <li key={i}>{bar.name}</li>
+                                {bars.map((bar, i) =>
+                                    <BarItem key={i} bar={bar} />
                                 )}
                             </ul>
                         </div>
@@ -80,7 +80,7 @@ const mapStateToProps = state => {
         lastUpdated,
         items: bars
     } = barsByLocation[selectedLocation] || {
-        isFetching: true,
+        isFetching: false,
         items: []
     }
 

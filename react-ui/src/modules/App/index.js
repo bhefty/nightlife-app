@@ -17,7 +17,9 @@ class App extends Component {
         const { dispatch, selectedLocation } = this.props
         dispatch(selectLocation(searchLocation))
         dispatch(invalidateLocation(selectedLocation))
-        dispatch(fetchBarsIfNeeded(selectedLocation))
+        if (selectedLocation.length !== 0) {
+            dispatch(fetchBarsIfNeeded(selectedLocation))
+        }
     }
 
     render() {
@@ -36,7 +38,6 @@ class App extends Component {
 App.propTypes = {
     selectedLocation: PropTypes.string.isRequired,
     bars: PropTypes.array.isRequired,
-    isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired
 }
@@ -44,18 +45,15 @@ App.propTypes = {
 const mapStateToProps = state => {
     const { selectedLocation, barsByLocation } = state
     const {
-        isFetching,
         lastUpdated,
         items: bars
     } = barsByLocation[selectedLocation] || {
-        isFetching: true,
         items: []
     }
 
     return {
         selectedLocation,
         bars,
-        isFetching,
         lastUpdated
     }
 }

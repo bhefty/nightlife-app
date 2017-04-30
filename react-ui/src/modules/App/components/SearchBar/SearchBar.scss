@@ -1,0 +1,30 @@
+.search-component {
+    background: #222 url('./restaurant-alcohol-bar-drinks.jpg') center center no-repeat;
+    min-height: 50rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .flex-container {
+        background: rgba(0,0,0,0.75);
+        width: 100%;
+        padding: 5rem 0;
+        .search-header {
+            color: #fff;
+            margin: 0 0 2rem 0;
+            font-size: 6rem;
+            font-weight: 200;
+        }
+        p {
+            color: #00F680;
+        }
+    }
+}
+
+#search-form {
+    margin: 0 auto;
+    max-width: 600px;
+    .btn {
+        margin: 0 auto;
+        max-width: 300px;
+    }
+}

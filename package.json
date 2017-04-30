@@ -7,6 +7,7 @@
   },
   "scripts": {
     "start": "node server",
+    "test": "NODE_ENV=test && mocha --timeout 10000 --recursive test",
     "heroku-postbuild": "cd react-ui/ && npm install --only=dev && npm install && npm run build"
   },
   "cacheDirectories": [
@@ -14,9 +15,12 @@
     "react-ui/node_modules"
   ],
   "dependencies": {
-    "dotenv": "^4.0.0",
+    "body-parser": "^1.17.1",
+    "config": "^1.25.1",
     "express": "^4.14.1",
     "mongodb": "^2.2.25",
+    "mongoose": "^4.9.2",
+    "morgan": "^1.8.1",
     "request": "^2.81.0"
   },
   "repository": {
@@ -30,5 +34,9 @@
     "react"
   ],
   "license": "MIT",
-  "devDependencies": {}
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.3.0"
+  }
 }

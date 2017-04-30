@@ -17,8 +17,10 @@ const options = {
   replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
 };
 
+const MONGO_URI = process.env.MONGO_URI || config.MONGO_URI
+
 mongoose.Promise = global.Promise;
-mongoose.connect(config.MONGO_URI, options);
+mongoose.connect(MONGO_URI, options);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 

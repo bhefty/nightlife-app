@@ -1,0 +1,5 @@
+{
+    "CLIENT_ID": "dIJbU_fn3yqO-9V1LEX55g",
+    "CLIENT_SECRET": "hOOgt5pUHGodJjwQPR14bz89i4ZFGWiS0JOhgy81elmQXgLgyXi6bw3f8D0v32r6",
+    "MONGO_URI": "mongodb://billhefty:REmf9UAWvHodhNbw@nightlifeapp-shard-00-00-djy4u.mongodb.net:27017,nightlifeapp-shard-00-01-djy4u.mongodb.net:27017,nightlifeapp-shard-00-02-djy4u.mongodb.net:27017/nightlife?ssl=true&replicaSet=NightlifeAPp-shard-0&authSource=admin"
+}

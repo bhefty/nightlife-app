@@ -12,28 +12,9 @@ class App extends Component {
       fetching: true
     };
     this.getBars = this.getBars.bind(this)
+    this.getAttendance = this.getAttendance.bind(this)
+    this.listBars = this.listBars.bind(this)
     this.handleChange = this.handleChange.bind(this)
-  }
-
-  componentDidMount() {
-    fetch('/api')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`status ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(json => {
-        this.setState({
-          message: json.message,
-          fetching: false
-        });
-      }).catch(e => {
-        this.setState({
-          message: `API call failed: ${e}`,
-          fetching: false
-        });
-      })
   }
 
   handleChange(event) {
@@ -41,10 +22,10 @@ class App extends Component {
   }
 
   getBars(event) {
-    this.setState({ bars: [], zip: '' })
+    this.setState({ bars: [] })
     event.preventDefault()
 
-    fetch('/api/79416')
+    fetch(`/yelp/${this.state.zip}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`status ${response.status}`)
@@ -52,18 +33,49 @@ class App extends Component {
         return response.json()
       })
       .then(json => {
-        console.log(json)
         this.setState({
-          bars: json.businesses,
+          bars: json,
+          zip: '',
           fetching: false
         })
       })
+      .then(() => this.getAttendance())
       .catch(e => {
         this.setState({
           message: `API call failed: ${e}`,
           fetching: false
         });
       })
+  }
+
+  getAttendance() {
+    let barsArray = this.state.bars
+    fetch('/yelp/activebars')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`status ${response.stats}`)
+        }
+        return response.json()
+      })
+      .then(json => {
+        json.forEach((active_bar, idx) => {
+          barsArray.forEach((bar, idx) => {
+            if (bar.id === active_bar.bar_id) {
+              barsArray[idx].numAttendees = active_bar.numAttendees
+            }
+          })
+        })
+      })
+  }
+
+  listBars() {
+    let allBars = this.state.bars
+    console.log(allBars[1].numAttendees)
+    let listBars = allBars.map((bar, idx) => {
+      if (bar.numAttendees) {console.log(bar.bar_id)}
+      return <li key={idx}>{bar.name}</li>
+    })
+    return <ul>{listBars}</ul>
   }
 
   render() {
@@ -93,16 +105,18 @@ class App extends Component {
           <input type='submit' value='Submit' />
         </form>
 
-        <ul>
-          {(this.state.bars.length > 0) 
-            ? 
-              this.state.bars.map((bar, idx) => <li key={idx}>{bar.name}</li>)
-            : 
-              <li>False</li>}
-        </ul>
+        {(this.state.bars.length > 0) 
+          ? 
+            this.listBars()
+          : 
+            <ul><li>False</li></ul>}
       </div>
     );
   }
 }
 
 export default App;
+
+//  {/*this.state.bars.map((bar, idx) => {
+                // <li key={idx}>{bar.name} with {bar.numAttendees} people going.</li>
+                // })*/}

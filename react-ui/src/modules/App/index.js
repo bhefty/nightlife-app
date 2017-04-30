@@ -14,7 +14,10 @@ class App extends Component {
     }
 
     submitSearch(searchLocation) {
-        console.log(searchLocation)
+        const { dispatch, selectedLocation } = this.props
+        dispatch(selectLocation(searchLocation))
+        dispatch(invalidateLocation(selectedLocation))
+        dispatch(fetchBarsIfNeeded(selectedLocation))
     }
 
     render() {

@@ -1,11 +1,14 @@
 import React from 'react';
 
+import Navigation from './components/Navigation';
+
 import './App.css';
 import logo from './logo.svg';
 
 const App = (props) => {
     return (
         <div className='App'>
+            <Navigation />
             <div className='App-header'>
                 <h2>Welcome to React</h2>
                 <img src={logo} alt='logo' className='App-logo' />

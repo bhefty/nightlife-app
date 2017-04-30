@@ -5,13 +5,13 @@ import App from './modules/App';
 import Home from './modules/Home';
 
 const Routes = (props) => (
-    <App>
-        <Router>
+    <Router>
+        <App>
             <Switch>
                 <Route exact path='/' component={Home} />
             </Switch>
-        </Router>
-    </App>
+        </App>
+    </Router>
 )
 
 export default Routes

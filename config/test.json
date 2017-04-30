@@ -1,5 +1,0 @@
-{
-    "CLIENT_ID": "dIJbU_fn3yqO-9V1LEX55g",
-    "CLIENT_SECRET": "hOOgt5pUHGodJjwQPR14bz89i4ZFGWiS0JOhgy81elmQXgLgyXi6bw3f8D0v32r6",
-    "MONGO_URI": "mongodb://localhost:27017/nightlife-app-testing"
-}

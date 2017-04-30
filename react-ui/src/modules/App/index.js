@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { selectLocation, fetchBarsIfNeeded, invalidateLocation } from '../../actions'
 import Navigation from './components/Navigation';
 import SearchBar from './components/SearchBar';
 
@@ -8,10 +10,15 @@ import './App.css';
 class App extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            bars: [],
-            location: '',
-            fetching: false
+        this.submitSearch = this.submitSearch.bind(this)
+    }
+
+    submitSearch(searchLocation) {
+        const { dispatch, selectedLocation } = this.props
+        dispatch(selectLocation(searchLocation))
+        dispatch(invalidateLocation(selectedLocation))
+        if (selectedLocation.length !== 0) {
+            dispatch(fetchBarsIfNeeded(selectedLocation))
         }
     }
 
@@ -19,7 +26,7 @@ class App extends Component {
         return (
             <div className='App'>
                 <Navigation />
-                <SearchBar />
+                <SearchBar submitSearch={this.submitSearch} />
                 <div className='App-header'>
                 </div>
                 {this.props.children}
@@ -28,4 +35,27 @@ class App extends Component {
     }
 }
 
-export default App;
+App.propTypes = {
+    selectedLocation: PropTypes.string.isRequired,
+    bars: PropTypes.array.isRequired,
+    lastUpdated: PropTypes.number,
+    dispatch: PropTypes.func.isRequired
+}
+
+const mapStateToProps = state => {
+    const { selectedLocation, barsByLocation } = state
+    const {
+        lastUpdated,
+        items: bars
+    } = barsByLocation[selectedLocation] || {
+        items: []
+    }
+
+    return {
+        selectedLocation,
+        bars,
+        lastUpdated
+    }
+}
+
+export default connect(mapStateToProps)(App);

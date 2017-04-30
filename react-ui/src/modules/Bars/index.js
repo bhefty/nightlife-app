@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { selectLocation, fetchBarsIfNeeded, invalidateLocation } from '../../actions'
+import { fetchBarsIfNeeded, invalidateLocation } from '../../actions'
+
+import BarItem from './components/BarItem'
 
 class Bars extends Component {
     componentDidMount() {
         const { dispatch, selectedLocation } = this.props
-        dispatch(fetchBarsIfNeeded(selectedLocation))
+        if (selectedLocation.length !== 0) {
+            dispatch(fetchBarsIfNeeded(selectedLocation))
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -14,10 +18,6 @@ class Bars extends Component {
             const { dispatch, selectedLocation } = nextProps
             dispatch(fetchBarsIfNeeded(selectedLocation))
         }
-    }
-
-    handleChange = nextLocation => {
-        this.props.dispatch(selectLocation(nextLocation))
     }
 
     handleRefreshClick = e => {
@@ -34,33 +34,28 @@ class Bars extends Component {
         return (
             <div>
                 <span>
-                    <h1>{selectedLocation}</h1>
-                    <select onChange={e => this.handleChange(e.target.value)}
-                            value={selectedLocation}>
-                        <option value='79424'>79424</option>
-                        <option value='10011'>10011</option>
-                    </select>
+                    <h1>{selectedLocation.toUpperCase()}</h1>
                 </span>
                 <p>
                     {lastUpdated &&
                         <span>
                             Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
-                            {' '}
+                            <br/>
                         </span>
                     }
-                    {!isFetching &&
+                    {!isFetching && !isEmpty &&
                         <a href='#'
                             onClick={this.handleRefreshClick}>
-                            handleRefreshClick
+                            Refresh results
                         </a>
                     }
                 </p>
                 {isEmpty
-                    ? (isFetching? <h2>Loading...</h2> : <h2>Empty.</h2>)
+                    ? (isFetching? <h2>Loading...</h2> : <h2>Please search for a location to meet</h2>)
                     : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
                             <ul>
-                                {bars.map((bar, i) => 
-                                    <li key={i}>{bar.name}</li>
+                                {bars.map((bar, i) =>
+                                    <BarItem key={i} bar={bar} />
                                 )}
                             </ul>
                         </div>
@@ -85,7 +80,7 @@ const mapStateToProps = state => {
         lastUpdated,
         items: bars
     } = barsByLocation[selectedLocation] || {
-        isFetching: true,
+        isFetching: false,
         items: []
     }
 

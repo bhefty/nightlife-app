@@ -4,7 +4,7 @@ import {
     REQUEST_BARS, RECEIVE_BARS
 } from '../actions'
 
-const selectedLocation = (state = '79416', action) => {
+const selectedLocation = (state = '', action) => {
     switch (action.type) {
         case SELECT_LOCATION:
             return action.location

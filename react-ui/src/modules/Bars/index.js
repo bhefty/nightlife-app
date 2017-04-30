@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Bars = (props) => {
-    console.log(props)
     return (
         <div>
             <h1>Bars!</h1>

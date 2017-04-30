@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Grid, Nav, Navbar, NavItem } from 'react-bootstrap';
 
+import './Navigation.css';
+
 class Navigation extends Component {
     render() {
         return (

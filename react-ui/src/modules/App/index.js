@@ -1,24 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import Navigation from './components/Navigation';
 import SearchBar from './components/SearchBar';
 
 import './App.css';
-import logo from './logo.svg';
 
-const App = (props) => {
-    return (
-        <div className='App'>
-            <Navigation />
-            <SearchBar />
-            <div className='App-header'>
-                <h2>Welcome to React</h2>
-                <img src={logo} alt='logo' className='App-logo' />
+class App extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            bars: [],
+            location: '',
+            fetching: false
+        }
+    }
+
+    render() {
+        return (
+            <div className='App'>
+                <Navigation />
+                <SearchBar />
+                <div className='App-header'>
+                </div>
+                {this.props.children}
             </div>
-            <p className='App=intro'>Welcome to App!</p>
-            {props.children}
-        </div>
-    )
+        )
+    }
 }
 
 export default App;

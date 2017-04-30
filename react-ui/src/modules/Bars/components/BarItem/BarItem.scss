@@ -32,7 +32,26 @@
   }
 
   .card-summary {
-    padding: 5% 5% 3% 5%;
+    text-align: left;
+    padding: 5% 5% 8% 5%;
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .container-rating-price {
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: row;
+        .rating {
+            font-size: 1.2em;
+        }
+        .price {
+            margin-left: auto;
+            color: #5CB85C;
+            font-size: 1.2em;
+        }
+    }
   }
 
   .card-header {
@@ -45,7 +64,7 @@
     background-color: rgba(white, 0.15);
     background-blend-mode: overlay;
     border-radius: 4px 4px 0 0;
-    &:hover, &:focus {
+    &:hover, &:focus, &.card-focus {
       background-color: rgba(white, 0);
       text-decoration: none;
     }
@@ -70,18 +89,20 @@
 
   .card-meta {
     max-height: 0;
+    width: 100%;
     overflow: hidden;
     color: #666;
     font-size: 0.78em;
     text-transform: uppercase;
     position: absolute;
-    bottom: 5%;
+    bottom: 2%;
     padding: 0 5%;
     transition-property: max-height;
     transition-duration: 0.4s;
     transition-timing-function: ease-in-out;
   }
-  &:hover, &:focus {
+
+  &:hover, &:focus, &.card-focus {
     background: white;
     box-shadow: rgba(0,0,0,0.45) 0px 0px 20px 0px;
     text-decoration: none;
@@ -91,7 +112,8 @@
     }
 
     .card-meta {
-      max-height: 1em;
+      max-height: 3.5em;
     }
   }
+  
 }

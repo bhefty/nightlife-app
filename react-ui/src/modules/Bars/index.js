@@ -8,6 +8,12 @@ import BarItem from './components/BarItem'
 import './Bars.css'
 
 class Bars extends Component {
+    constructor() {
+        super()
+        this.state = {
+            focus: ''
+        }
+    }
     componentDidMount() {
         const { dispatch, selectedLocation } = this.props
         if (selectedLocation.length !== 0) {
@@ -56,8 +62,11 @@ class Bars extends Component {
                     ? (isFetching? <h2>Loading...</h2> : <h2>Please search for a location to meet</h2>)
                     : <div className='container' style={{ opacity: isFetching ? 0.5 : 1 }}>
                             <div className='cards'>
-                                {bars.map((bar) =>
-                                    <BarItem bar={bar} />
+                                {bars.map((bar, i) =>
+                                    <BarItem 
+                                        key={i}
+                                        bar={bar}
+                                        focus={this.state.focus} />
                                 )}
                             </div>
                         </div>

@@ -18,6 +18,7 @@ const options = {
 };
 
 const MONGO_URI = process.env.MONGO_URI || config.MONGO_URI
+console.log('mongo: ', MONGO_URI)
 
 mongoose.Promise = global.Promise;
 mongoose.connect(MONGO_URI, options);

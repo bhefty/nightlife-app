@@ -1,0 +1,97 @@
+.card {
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+  position: relative;
+  margin-bottom: 20px;
+  padding-bottom: 30px;
+  background: #fefff9;
+  color: #363636;
+  text-decoration: none;
+  box-shadow: rgba(0,0,0,0.19) 0 0 8px 0;
+  border-radius: 4px;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+  @media (min-width: 768px) {
+    min-width: 320px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    &:nth-child(even) {
+      margin-right: 0;
+    }
+  }
+  @media (min-width: 980px) {
+    &:nth-child(even) {
+        margin-right: 20px;
+	}
+  }
+
+  span {
+    display: block;
+  }
+
+  .card-summary {
+    padding: 5% 5% 3% 5%;
+  }
+
+  .card-header {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(white, 0.15);
+    background-blend-mode: overlay;
+    border-radius: 4px 4px 0 0;
+    &:hover, &:focus {
+      background-color: rgba(white, 0);
+      text-decoration: none;
+    }
+  }
+
+  .card-title {
+    background: rgba(26, 94, 99, 0.85);
+    padding: 3.5% 0 2.5% 0;
+    color: white;
+    font-family: 'Roboto Condensed', sans-serif;
+    text-transform: uppercase;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    h3 {
+      font-size: 1.2em;
+      line-height: 1.2;
+      padding: 0 3.5%;
+      margin: 0;
+    }
+  }
+
+  .card-meta {
+    max-height: 0;
+    overflow: hidden;
+    color: #666;
+    font-size: 0.78em;
+    text-transform: uppercase;
+    position: absolute;
+    bottom: 5%;
+    padding: 0 5%;
+    transition-property: max-height;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
+  }
+  &:hover, &:focus {
+    background: white;
+    box-shadow: rgba(0,0,0,0.45) 0px 0px 20px 0px;
+    text-decoration: none;
+    
+    .card-title {
+      background: rgba(26, 94, 99, 0.95);
+    }
+
+    .card-meta {
+      max-height: 1em;
+    }
+  }
+}

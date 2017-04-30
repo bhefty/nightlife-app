@@ -5,6 +5,8 @@ import { fetchBarsIfNeeded, invalidateLocation } from '../../actions'
 
 import BarItem from './components/BarItem'
 
+import './Bars.css'
+
 class Bars extends Component {
     componentDidMount() {
         const { dispatch, selectedLocation } = this.props
@@ -52,12 +54,12 @@ class Bars extends Component {
                 </p>
                 {isEmpty
                     ? (isFetching? <h2>Loading...</h2> : <h2>Please search for a location to meet</h2>)
-                    : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-                            <ul>
-                                {bars.map((bar, i) =>
-                                    <BarItem key={i} bar={bar} />
+                    : <div className='container' style={{ opacity: isFetching ? 0.5 : 1 }}>
+                            <div className='cards'>
+                                {bars.map((bar) =>
+                                    <BarItem bar={bar} />
                                 )}
-                            </ul>
+                            </div>
                         </div>
                 }
             </div>

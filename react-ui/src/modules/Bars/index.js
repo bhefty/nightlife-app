@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { fetchBarsIfNeeded, invalidateLocation } from '../../actions'
 import SearchBar from '../../components/SearchBar';
 
@@ -9,13 +10,6 @@ import BarItem from './components/BarItem'
 import './Bars.css'
 
 class Bars extends Component {
-    componentDidMount() {
-        const { dispatch, selectedLocation } = this.props
-        if (selectedLocation.length !== 0) {
-            dispatch(fetchBarsIfNeeded(selectedLocation))
-        }
-    }
-
     componentWillReceiveProps(nextProps) {
         if (nextProps.selectedLocation !== this.props.selectedLocation) {
             const { dispatch, selectedLocation } = nextProps
@@ -101,4 +95,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Bars);
+export default withRouter(connect(mapStateToProps)(Bars));

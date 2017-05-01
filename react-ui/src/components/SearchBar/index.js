@@ -63,24 +63,14 @@ class SearchBar extends Component {
 
 SearchBar.propTypes = {
     selectedLocation: PropTypes.string.isRequired,
-    bars: PropTypes.array.isRequired,
-    lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => {
-    const { selectedLocation, barsByLocation } = state
-    const {
-        lastUpdated,
-        items: bars
-    } = barsByLocation[selectedLocation] || {
-        items: []
-    }
+    const { selectedLocation } = state
 
     return {
-        selectedLocation,
-        bars,
-        lastUpdated
+        selectedLocation
     }
 }
 

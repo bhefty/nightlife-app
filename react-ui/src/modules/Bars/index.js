@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { fetchBarsIfNeeded, invalidateLocation } from '../../actions'
+import SearchBar from '../../components/SearchBar';
 
 import BarItem from './components/BarItem'
 
@@ -35,36 +36,39 @@ class Bars extends Component {
         const isEmpty = bars.length === 0
         return (
             <div>
-                <span>
-                    <h1>{selectedLocation.toUpperCase()}</h1>
-                </span>
-                <p>
-                    {lastUpdated &&
-                        <span>
-                            Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
-                            <br/>
-                        </span>
-                    }
-                    {!isFetching && !isEmpty &&
-                        <a href='#'
-                            onClick={this.handleRefreshClick}>
-                            Refresh results
-                        </a>
-                    }
-                </p>
-                {isEmpty
-                    ? (isFetching? <h2>Loading...</h2> : <h2>Please search for a location to meet</h2>)
-                    : <div className='container' style={{ opacity: isFetching ? 0.5 : 1 }}>
-                            <div className='cards'>
-                                {bars.map((bar, i) =>
-                                    <BarItem 
-                                        key={i}
-                                        bar={bar}
-                                    />
-                                )}
+                <SearchBar />
+                <div className='bars-container'>
+                    <span>
+                        <h1>{selectedLocation.toUpperCase()}</h1>
+                    </span>
+                    <p>
+                        {lastUpdated &&
+                            <span>
+                                Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
+                                <br/>
+                            </span>
+                        }
+                        {!isFetching && !isEmpty &&
+                            <a href='#'
+                                onClick={this.handleRefreshClick}>
+                                Refresh results
+                            </a>
+                        }
+                    </p>
+                    {isEmpty
+                        ? (isFetching? <h2>Loading...</h2> : <h2>Please search for a location to meet</h2>)
+                        : <div className='container' style={{ opacity: isFetching ? 0.5 : 1 }}>
+                                <div className='cards'>
+                                    {bars.map((bar, i) =>
+                                        <BarItem 
+                                            key={i}
+                                            bar={bar}
+                                        />
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                }
+                    }
+                </div>
             </div>
         )
     }

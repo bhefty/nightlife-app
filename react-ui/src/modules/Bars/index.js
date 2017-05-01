@@ -10,6 +10,13 @@ import BarItem from './components/BarItem'
 import './Bars.css'
 
 class Bars extends Component {
+    componentDidMount() {
+        const { dispatch, selectedLocation } = this.props
+        if (selectedLocation.length !== 0) {
+            dispatch(fetchBarsIfNeeded(selectedLocation))
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.selectedLocation !== this.props.selectedLocation) {
             const { dispatch, selectedLocation } = nextProps

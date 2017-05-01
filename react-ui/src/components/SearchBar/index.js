@@ -23,20 +23,21 @@ class SearchBar extends Component {
 
     handleSubmit(e) {
         e.preventDefault()
-        this.props.history.push(
-            {
-                pathname: '/bars'
-            }
-        )
+        this.input.blur()
         if (this.state.searchValue.length !== 0) {
             const { dispatch, selectedLocation } = this.props
             dispatch(selectLocation(this.state.searchValue))
             dispatch(invalidateLocation(selectedLocation))
             if (selectedLocation.length !== 0) {
                 dispatch(fetchBarsIfNeeded(selectedLocation))
-                this.setState({searchValue: ''})
             }
         }
+        this.props.history.push(
+            {
+                pathname: '/bars'
+            }
+        )
+        this.setState({searchValue: ''})
     }
 
     render() {
@@ -48,6 +49,7 @@ class SearchBar extends Component {
                 <Form id='search-form' onSubmit={this.handleSubmit}>
                     <FormGroup bsSize='large' controlId='formSearchBars'>
                         <FormControl 
+                            inputRef={ref => { this.input = ref }}
                             onChange={this.handleChange}
                             value={this.state.searchValue}
                             type='text' 
@@ -63,14 +65,21 @@ class SearchBar extends Component {
 
 SearchBar.propTypes = {
     selectedLocation: PropTypes.string.isRequired,
+    bars: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => {
-    const { selectedLocation } = state
-
+    const { selectedLocation, barsByLocation } = state
+    const {
+        items: bars
+    } = barsByLocation[selectedLocation] || {
+        items: []
+    }
+ 
     return {
-        selectedLocation
+        selectedLocation,
+        bars
     }
 }
 

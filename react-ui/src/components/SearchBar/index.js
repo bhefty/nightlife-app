@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import { selectLocation, fetchBarsIfNeeded, invalidateLocation } from '../../actions'
 import { Button, Form, FormGroup, FormControl } from 'react-bootstrap';
 
 import './SearchBar.css';
@@ -19,10 +23,21 @@ class SearchBar extends Component {
 
     handleSubmit(e) {
         e.preventDefault()
+        this.input.blur()
         if (this.state.searchValue.length !== 0) {
-            this.props.submitSearch(this.state.searchValue)
-            this.setState({searchValue: ''})
+            const { dispatch, selectedLocation } = this.props
+            dispatch(selectLocation(this.state.searchValue))
+            dispatch(invalidateLocation(selectedLocation))
+            if (selectedLocation.length !== 0) {
+                dispatch(fetchBarsIfNeeded(selectedLocation))
+            }
         }
+        this.props.history.push(
+            {
+                pathname: '/bars'
+            }
+        )
+        this.setState({searchValue: ''})
     }
 
     render() {
@@ -34,6 +49,7 @@ class SearchBar extends Component {
                 <Form id='search-form' onSubmit={this.handleSubmit}>
                     <FormGroup bsSize='large' controlId='formSearchBars'>
                         <FormControl 
+                            inputRef={ref => { this.input = ref }}
                             onChange={this.handleChange}
                             value={this.state.searchValue}
                             type='text' 
@@ -47,4 +63,24 @@ class SearchBar extends Component {
     }
 }
 
-export default SearchBar;
+SearchBar.propTypes = {
+    selectedLocation: PropTypes.string.isRequired,
+    bars: PropTypes.array.isRequired,
+    dispatch: PropTypes.func.isRequired
+}
+
+const mapStateToProps = state => {
+    const { selectedLocation, barsByLocation } = state
+    const {
+        items: bars
+    } = barsByLocation[selectedLocation] || {
+        items: []
+    }
+ 
+    return {
+        selectedLocation,
+        bars
+    }
+}
+
+export default withRouter(connect(mapStateToProps)(SearchBar));

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Grid, Nav, Navbar, NavItem } from 'react-bootstrap';
 
@@ -12,13 +12,16 @@ class Navigation extends Component {
                 <Grid>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <Link to='/'>Nightlife Activity</Link>
+                            <NavLink to='/'>Nightlife Activity</NavLink>
                         </Navbar.Brand>
                         <Navbar.Toggle />
                     </Navbar.Header>
                     <Navbar.Collapse>
                         <Nav pullRight>
-                            <LinkContainer to=''>
+                            <LinkContainer to='/bars'>
+                                <NavItem className='nav-link'>Bars</NavItem>
+                            </LinkContainer>
+                            <LinkContainer to='/login'>
                                 <NavItem className='nav-link'>Login</NavItem>
                             </LinkContainer>
                         </Nav>

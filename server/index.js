@@ -18,7 +18,6 @@ const options = {
 };
 
 const MONGO_URI = process.env.MONGO_URI || config.MONGO_URI
-console.log('mongo: ', MONGO_URI)
 
 mongoose.Promise = global.Promise;
 mongoose.connect(MONGO_URI, options);
@@ -26,7 +25,6 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 // do not show log when in test mode
-console.log(config.util.getEnv('NODE_ENV'))
 if (config.util.getEnv('NODE_ENV') !== 'test') {
   app.use(morgan('combined'))
 }

@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import {
     SELECT_LOCATION, INVALIDATE_LOCATION,
     REQUEST_BARS, RECEIVE_BARS
-} from '../actions'
+} from '../../actions/yelp'
 
 const selectedLocation = (state = '', action) => {
     switch (action.type) {

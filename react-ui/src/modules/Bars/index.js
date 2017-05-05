@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { fetchBarsIfNeeded, invalidateLocation } from '../../actions'
+import { fetchBarsIfNeeded, invalidateLocation } from '../../actions/yelp'
 import SearchBar from '../../components/SearchBar';
 
 import BarItem from './components/BarItem'

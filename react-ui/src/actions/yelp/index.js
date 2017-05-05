@@ -2,6 +2,7 @@ export const REQUEST_BARS = 'REQUEST_BARS'
 export const RECEIVE_BARS = 'RECEIVE_BARS'
 export const SELECT_LOCATION = 'SELECT_LOCATION'
 export const INVALIDATE_LOCATION = 'INVALIDATE_LOCATION'
+export const REQUEST_BARS_FAILURE = 'REQUEST_BARS_FAILURE'
 
 export const selectLocation = location => ({
     type: SELECT_LOCATION,
@@ -25,17 +26,19 @@ export const receiveBars = (location, barsArray) => ({
     receivedAt: Date.now()
 })
 
-const fetchBars = location => dispatch => {
+export const fetchBars = location => dispatch => {
     dispatch(requestBars(location))
     return fetch(`/yelp/${location}`)
         .then(response => response.json())
         .then(barsArray => {
             dispatch(receiveBars(location, barsArray))
         })
-        .catch(err => console.log(err))
+        .catch(() => {
+            dispatch({ type: REQUEST_BARS_FAILURE })
+        })
 }
 
-const shouldFetchBars = (state, location) => {
+export const shouldFetchBars = (state, location) => {
     const bars = state.barsByLocation[location]
     if (!bars) {
         return true
@@ -47,7 +50,9 @@ const shouldFetchBars = (state, location) => {
 }
 
 export const fetchBarsIfNeeded = location => (dispatch, getState) => {
+    console.log('location', location)
     if (shouldFetchBars(getState(), location)) {
+        console.log('state', getState())
         return dispatch(fetchBars(location))
     }
 }

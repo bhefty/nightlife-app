@@ -4,7 +4,7 @@ import {
     REQUEST_BARS, RECEIVE_BARS
 } from '../../actions/yelp'
 
-const selectedLocation = (state = '', action) => {
+export const selectedLocation = (state = '', action) => {
     switch (action.type) {
         case SELECT_LOCATION:
             return action.location
@@ -13,7 +13,7 @@ const selectedLocation = (state = '', action) => {
     }
 }
 
-const bars = (state = {
+export const bars = (state = {
     isFetching: false,
     didInvalidate: false,
     items: []
@@ -43,7 +43,7 @@ const bars = (state = {
     }
 }
 
-const barsByLocation = (state = { }, action) => {
+export const barsByLocation = (state = { }, action) => {
     switch (action.type) {
         case INVALIDATE_LOCATION:
         case RECEIVE_BARS:

@@ -50,9 +50,7 @@ export const shouldFetchBars = (state, location) => {
 }
 
 export const fetchBarsIfNeeded = location => (dispatch, getState) => {
-    console.log('location', location)
     if (shouldFetchBars(getState(), location)) {
-        console.log('state', getState())
         return dispatch(fetchBars(location))
     }
 }

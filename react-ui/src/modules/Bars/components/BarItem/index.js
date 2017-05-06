@@ -31,6 +31,9 @@ class BarItem extends Component {
                 onLeave={() => this.toggleClass()}
             >
                 <span key={i} className={'card ' + this.state.focus}>
+                    <div className='card-attendees'>
+                        {numAttendees} going tonight
+                    </div>
                     <span className={'card-header ' + this.state.focus} style={{ backgroundImage: `url(${bar.image_url})` }}>
                         <span className='card-title'>
                             <h3>{bar.name}</h3>
@@ -45,7 +48,6 @@ class BarItem extends Component {
                                     value={bar.rating}
                                 />
                             </div>
-                            {numAttendees}
                             <div className='price'>
                                 {bar.price}
                             </div>

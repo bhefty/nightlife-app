@@ -2,7 +2,11 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
 import * as actions from '../index'
-import { REQUEST_BARS, RECEIVE_BARS, REQUEST_BARS_FAILURE, SELECT_LOCATION, INVALIDATE_LOCATION } from '../index'
+import { 
+    REQUEST_BARS, RECEIVE_BARS, REQUEST_BARS_FAILURE,
+    REQUEST_NUM_ATTENDEES, RECEIVE_NUM_ATTENDEES, REQUEST_NUM_ATTENDEES_FAILURE, 
+    SELECT_LOCATION, INVALIDATE_LOCATION 
+} from '../index'
 
 const mockStore = configureMockStore([thunk])
 Date.now = jest.fn(() => 1493947561218)
@@ -156,6 +160,50 @@ describe('Yelp async actions', () => {
                         },
                         {
                             type: REQUEST_BARS_FAILURE
+                        }
+                    ])
+                })
+        })
+    })
+
+    describe('fetchNumAttendees', () => {
+        it('should handle fetchNumAttendees success', () => {
+            const store = mockStore()
+            const location = 'London'
+
+            fetchMock.get('/bars/', { activeBarsArray: [{ 'bar_id': 'bar-barn', numAttendees: 3 }, { 'bar_id': 'fluffys-factory', numAttendees: 2 }] })
+
+            return store.dispatch(actions.fetchNumAttendees(location))
+                .then(() => {
+                    expect(store.getActions()).toEqual([
+                        {
+                            type: REQUEST_NUM_ATTENDEES,
+                            location
+                        },
+                        {
+                            type: RECEIVE_NUM_ATTENDEES,
+                            location,
+                            active: { activeBarsArray: [{ 'bar_id': 'bar-barn', numAttendees: 3 }, { 'bar_id': 'fluffys-factory', numAttendees: 2 }] }
+                        }
+                    ])
+                })
+        })
+
+        it('should handle fetchNumAttendees failure', () => {
+            const store = mockStore()
+            const location = 'London'
+
+            fetchMock.get('/bars/', 400)
+
+            return store.dispatch(actions.fetchNumAttendees(location))
+                .then(() => {
+                    expect(store.getActions()).toEqual([
+                        {
+                            type: REQUEST_NUM_ATTENDEES,
+                            location
+                        },
+                        {
+                            type: REQUEST_NUM_ATTENDEES_FAILURE,
                         }
                     ])
                 })

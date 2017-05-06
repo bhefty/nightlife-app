@@ -25,7 +25,8 @@ describe('Yelp reducer', () => {
             expect(bars(undefined, {})).toEqual({
                 isFetching: false,
                 didInvalidate: false,
-                items: []
+                items: [],
+                activeBars: []
             })
         })
 
@@ -33,7 +34,8 @@ describe('Yelp reducer', () => {
             const expectedState = {
                 isFetching: false,
                 didInvalidate: true,
-                items: []
+                items: [],
+                activeBars: []
             }
 
             expect(bars(undefined, {
@@ -46,7 +48,8 @@ describe('Yelp reducer', () => {
             const expectedState = {
                 isFetching: true,
                 didInvalidate: false,
-                items: []
+                items: [],
+                activeBars: []
             }
 
             expect(bars(undefined, {
@@ -63,6 +66,7 @@ describe('Yelp reducer', () => {
                 isFetching: false,
                 didInvalidate: false,
                 items: barsItems, 
+                activeBars: [],
                 lastUpdated: receivedAt
             }
 
@@ -73,7 +77,37 @@ describe('Yelp reducer', () => {
             })).toEqual(expectedState)
         })
 
-        it('should return same state fro unknown action', () => {
+        it('should request numAttendees', () => {
+            const expectedState = {
+                isFetching: true,
+                didInvalidate: false,
+                items: [],
+                activeBars: []
+            }
+
+            expect(bars(undefined, {
+                type: 'REQUEST_NUM_ATTENDEES',
+            })).toEqual(expectedState)
+        })
+
+        it('should receive numAttendees', () => {
+            const activeBars = [{ 'bar_id': 'Bar1', 'numAttendees': 3 }, { 'bar_id': 'Bar2', 'numAttendees': 1 }]
+            const location = 'London'
+            const expectedState = {
+                isFetching: false,
+                didInvalidate: false,
+                items: [], 
+                activeBars,
+            }
+
+            expect(bars(undefined, {
+                type: 'RECEIVE_NUM_ATTENDEES',
+                location,
+                active: activeBars
+            })).toEqual(expectedState)
+        })
+
+        it('should return same state for unknown action', () => {
             const expectedState = {
                 isFetching: true,
                 didInvalidate: true,
@@ -94,7 +128,8 @@ describe('Yelp reducer', () => {
             const expectedState = {
                 isFetching: false,
                 didInvalidate: true,
-                items: []
+                items: [],
+                activeBars: []
             }
             const location = 'San Diego'
             expect(barsByLocation(undefined, {
@@ -112,6 +147,7 @@ describe('Yelp reducer', () => {
                 isFetching: false,
                 didInvalidate: false,
                 items: barsItems,
+                activeBars: [],
                 lastUpdated: receivedAt
             }
             const location = 'San Diego'
@@ -129,6 +165,7 @@ describe('Yelp reducer', () => {
                 isFetching: true,
                 didInvalidate: false,
                 items: [],
+                activeBars: [],
             }
             expect(barsByLocation(undefined, {
                 type: 'REQUEST_BARS',

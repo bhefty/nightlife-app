@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { fetchBarsIfNeeded, invalidateLocation } from '../../actions/yelp'
+import { fetchBarsIfNeeded, invalidateLocation, fetchNumAttendees } from '../../actions/yelp'
 import SearchBar from '../../components/SearchBar';
 
 import BarItem from './components/BarItem'
@@ -14,6 +14,7 @@ class Bars extends Component {
         const { dispatch, selectedLocation } = this.props
         if (selectedLocation.length !== 0) {
             dispatch(fetchBarsIfNeeded(selectedLocation))
+            dispatch(fetchNumAttendees(selectedLocation))
         }
     }
 
@@ -21,6 +22,7 @@ class Bars extends Component {
         if (nextProps.selectedLocation !== this.props.selectedLocation) {
             const { dispatch, selectedLocation } = nextProps
             dispatch(fetchBarsIfNeeded(selectedLocation))
+            dispatch(fetchNumAttendees(selectedLocation))
         }
     }
 
@@ -78,6 +80,7 @@ class Bars extends Component {
 Bars.propTypes = {
     selectedLocation: PropTypes.string.isRequired,
     bars: PropTypes.array.isRequired,
+    active: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired
@@ -88,15 +91,18 @@ const mapStateToProps = state => {
     const {
         isFetching,
         lastUpdated,
-        items: bars
+        items: bars,
+        activeBars: active
     } = barsByLocation[selectedLocation] || {
         isFetching: false,
-        items: []
+        items: [],
+        activeBars: []
     }
 
     return {
         selectedLocation,
         bars,
+        active,
         isFetching,
         lastUpdated
     }

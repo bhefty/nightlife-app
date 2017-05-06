@@ -1,8 +1,11 @@
 export const REQUEST_BARS = 'REQUEST_BARS'
 export const RECEIVE_BARS = 'RECEIVE_BARS'
+export const REQUEST_NUM_ATTENDEES = 'REQUEST_NUM_ATTENDEES'
+export const RECEIVE_NUM_ATTENDEES = 'RECEIVE_NUM_ATTENDEES'
 export const SELECT_LOCATION = 'SELECT_LOCATION'
 export const INVALIDATE_LOCATION = 'INVALIDATE_LOCATION'
 export const REQUEST_BARS_FAILURE = 'REQUEST_BARS_FAILURE'
+export const REQUEST_NUM_ATTENDEES_FAILURE = 'REQUEST_NUM_ATTENDEES_FAILURE'
 
 export const selectLocation = location => ({
     type: SELECT_LOCATION,
@@ -26,6 +29,17 @@ export const receiveBars = (location, barsArray) => ({
     receivedAt: Date.now()
 })
 
+export const requestNumAttendees = location => ({
+    type: REQUEST_NUM_ATTENDEES,
+    location
+})
+
+export const receiveNumAttendees = (location, attendeesArray) => ({
+    type: RECEIVE_NUM_ATTENDEES,
+    location,
+    active: attendeesArray
+})
+
 export const fetchBars = location => dispatch => {
     dispatch(requestBars(location))
     return fetch(`/yelp/${location}`)
@@ -35,6 +49,18 @@ export const fetchBars = location => dispatch => {
         })
         .catch(() => {
             dispatch({ type: REQUEST_BARS_FAILURE })
+        })
+}
+
+export const fetchNumAttendees = location => dispatch => {
+    dispatch(requestNumAttendees(location))
+    return fetch('/bars/')
+        .then(response => response.json())
+        .then(attendeesArray => {
+            dispatch(receiveNumAttendees(location, attendeesArray))
+        })
+        .catch(() => {
+            dispatch({ type: REQUEST_NUM_ATTENDEES_FAILURE })
         })
 }
 

@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux'
 import {
     SELECT_LOCATION, INVALIDATE_LOCATION,
-    REQUEST_BARS, RECEIVE_BARS
+    REQUEST_BARS, RECEIVE_BARS,
+    REQUEST_NUM_ATTENDEES, RECEIVE_NUM_ATTENDEES
 } from '../../actions/yelp'
 
 export const selectedLocation = (state = '', action) => {
@@ -16,13 +17,27 @@ export const selectedLocation = (state = '', action) => {
 export const bars = (state = {
     isFetching: false,
     didInvalidate: false,
-    items: []
+    items: [],
+    activeBars: []
 }, action) => {
     switch (action.type) {
         case INVALIDATE_LOCATION:
             return {
                 ...state,
                 didInvalidate: true
+            }
+        case REQUEST_NUM_ATTENDEES:
+            return {
+                ...state,
+                isFetching: true,
+                didInvalidate: false
+            }
+        case RECEIVE_NUM_ATTENDEES:
+            return {
+                ...state,
+                isFetching: false,
+                didInvalidate: false,
+                activeBars: action.active
             }
         case REQUEST_BARS:
             return {
@@ -46,6 +61,8 @@ export const bars = (state = {
 export const barsByLocation = (state = { }, action) => {
     switch (action.type) {
         case INVALIDATE_LOCATION:
+        case RECEIVE_NUM_ATTENDEES:
+        case REQUEST_NUM_ATTENDEES:
         case RECEIVE_BARS:
         case REQUEST_BARS:
             return {

@@ -70,7 +70,7 @@ export const receiveDecreaseNumAttendees = (id, attendeesArray) => ({
 
 export const putIncreaseNumAttendees = id => dispatch => {
     dispatch(requestIncreaseNumAttendees(id))
-    return fetch(`/bars/inc/${id}`)
+    return fetch(`/bars/inc/${id}`, {method: 'PUT'})
         .then(response => response.json())
         .then(attendeesArray => {
             dispatch(receiveIncreaseNumAttendees(id, attendeesArray))
@@ -82,7 +82,7 @@ export const putIncreaseNumAttendees = id => dispatch => {
 
 export const putDecreaseNumAttendees = id => dispatch => {
     dispatch(requestDecreaseNumAttendees(id))
-    return fetch(`/bars/dec/${id}`)
+    return fetch(`/bars/dec/${id}`, {method: 'PUT'})
         .then(response => response.json())
         .then(attendeesArray => {
             dispatch(receiveDecreaseNumAttendees(id, attendeesArray))

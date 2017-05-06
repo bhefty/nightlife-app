@@ -264,7 +264,7 @@ describe('Yelp async actions', () => {
             const store = mockStore()
             const id = 'the-loft-lubbock-2'
 
-            fetchMock.get(`/bars/inc/${id}`, { activeBarsArray: [{ 'id': 'the-loft-lubbock-2', numAttendees: 3 }, { 'id': 'fluffys-factory', numAttendees: 2 }] })
+            fetchMock.put(`/bars/inc/${id}`, { activeBarsArray: [{ 'id': 'the-loft-lubbock-2', numAttendees: 3 }, { 'id': 'fluffys-factory', numAttendees: 2 }] })
 
             return store.dispatch(actions.putIncreaseNumAttendees(id))
                 .then(() => {
@@ -286,7 +286,7 @@ describe('Yelp async actions', () => {
             const store = mockStore()
             const id = 'the-loft-lubbock-2'
 
-            fetchMock.get(`/bars/inc/${id}`, 400)
+            fetchMock.put(`/bars/inc/${id}`, 400)
 
             return store.dispatch(actions.putIncreaseNumAttendees(id))
                 .then(() => {
@@ -308,7 +308,7 @@ describe('Yelp async actions', () => {
             const store = mockStore()
             const id = 'the-loft-lubbock-2'
 
-            fetchMock.get(`/bars/dec/${id}`, { activeBarsArray: [{ 'id': 'the-loft-lubbock-2', numAttendees: 2 }, { 'id': 'fluffys-factory', numAttendees: 2 }] })
+            fetchMock.put(`/bars/dec/${id}`, { activeBarsArray: [{ 'id': 'the-loft-lubbock-2', numAttendees: 2 }, { 'id': 'fluffys-factory', numAttendees: 2 }] })
 
             return store.dispatch(actions.putDecreaseNumAttendees(id))
                 .then(() => {
@@ -330,7 +330,7 @@ describe('Yelp async actions', () => {
             const store = mockStore()
             const id = 'the-loft-lubbock-2'
 
-            fetchMock.get(`/bars/dec/${id}`, 400)
+            fetchMock.put(`/bars/dec/${id}`, 400)
 
             return store.dispatch(actions.putDecreaseNumAttendees(id))
                 .then(() => {

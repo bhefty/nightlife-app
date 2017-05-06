@@ -22,7 +22,7 @@ class BarItem extends Component {
         }
     }
     render() {
-        const { i, bar, numAttendees } = this.props
+        const { i, bar, numAttendees, handleAttendance } = this.props
         return (
             <Waypoint 
                 bottomOffset='25%'
@@ -63,7 +63,7 @@ class BarItem extends Component {
                         </ul>
                     </span>
                     <span className='card-meta'>
-                        <Button block className='btn btn-success'>Count me in!</Button>
+                        <Button block className='btn btn-success' onClick={() => handleAttendance(bar.id)}>Count me in!</Button>
                     </span>
                 </span>
             </Waypoint>

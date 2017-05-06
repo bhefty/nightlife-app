@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { fetchBarsIfNeeded, invalidateLocation, fetchNumAttendees } from '../../actions/yelp'
+import { fetchBarsIfNeeded, invalidateLocation, fetchNumAttendees, putIncreaseNumAttendees } from '../../actions/yelp'
 import SearchBar from '../../components/SearchBar';
 
 import BarItem from './components/BarItem'
@@ -19,6 +19,7 @@ class Bars extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log('next', nextProps)
         if (nextProps.selectedLocation !== this.props.selectedLocation) {
             const { dispatch, selectedLocation } = nextProps
             dispatch(fetchBarsIfNeeded(selectedLocation))
@@ -40,6 +41,12 @@ class Bars extends Component {
             return bar.bar_id === id
         })
         return (filteredAttendees.length > 0) ? filteredAttendees[0].numAttendees : 0
+    }
+
+    handleAttendance = (id) => {
+        const { dispatch, selectedLocation } = this.props
+        dispatch(putIncreaseNumAttendees(id))
+        dispatch(fetchNumAttendees(selectedLocation))
     }
 
     render() {
@@ -75,6 +82,7 @@ class Bars extends Component {
                                                 key={i}
                                                 bar={bar}
                                                 numAttendees={this.getNumAttendees(bar.id)}
+                                                handleAttendance={(id) => this.handleAttendance(id)}
                                             />
                                     )}
                                 </div>

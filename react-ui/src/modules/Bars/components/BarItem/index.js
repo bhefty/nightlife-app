@@ -22,7 +22,7 @@ class BarItem extends Component {
         }
     }
     render() {
-        const { i, bar } = this.props
+        const { i, bar, numAttendees } = this.props
         return (
             <Waypoint 
                 bottomOffset='25%'
@@ -45,6 +45,7 @@ class BarItem extends Component {
                                     value={bar.rating}
                                 />
                             </div>
+                            {numAttendees}
                             <div className='price'>
                                 {bar.price}
                             </div>

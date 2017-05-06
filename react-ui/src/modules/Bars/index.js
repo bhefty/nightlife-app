@@ -34,8 +34,16 @@ class Bars extends Component {
         dispatch(fetchBarsIfNeeded(selectedLocation))
     }
 
+    getNumAttendees = id => {
+        const { active } = this.props
+        let filteredAttendees = active.filter((bar) => {
+            return bar.bar_id === id
+        })
+        return (filteredAttendees.length > 0) ? filteredAttendees[0].numAttendees : 0
+    }
+
     render() {
-        const { selectedLocation, bars, isFetching, lastUpdated } = this.props
+        const { selectedLocation, active, bars, isFetching, lastUpdated } = this.props
         const isEmpty = bars.length === 0
         return (
             <div>
@@ -64,9 +72,10 @@ class Bars extends Component {
                                 <div className='cards'>
                                     {bars.map((bar, i) =>
                                         <BarItem 
-                                            key={i}
-                                            bar={bar}
-                                        />
+                                                key={i}
+                                                bar={bar}
+                                                numAttendees={this.getNumAttendees(bar.id)}
+                                            />
                                     )}
                                 </div>
                             </div>

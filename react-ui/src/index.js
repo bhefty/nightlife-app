@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger'
-import reducer from './reducers';
+import reducer from './reducers/yelp';
 import Routes from './routes';
 
 import 'bootstrap/dist/css/bootstrap.min.css';

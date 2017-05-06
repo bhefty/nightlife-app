@@ -31,6 +31,12 @@
     display: block;
   }
 
+  .card-attendees {
+    padding: 10px;
+    background-color: rgba(92, 184, 92, 0.55);
+    color: #fff;
+  }
+
   .card-summary {
     text-align: left;
     padding: 5% 5% 8% 5%;
@@ -112,6 +118,10 @@
     background: white;
     box-shadow: rgba(0,0,0,0.45) 0px 0px 20px 0px;
     text-decoration: none;
+
+    .card-attendees {
+      background-color: rgba(92, 184, 92, 0.85);
+    }
     
     .card-title {
       background: rgba(26, 94, 99, 0.95);

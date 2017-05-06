@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { selectLocation, fetchBarsIfNeeded, invalidateLocation } from '../../actions'
+import { selectLocation, fetchBarsIfNeeded, invalidateLocation } from '../../actions/yelp'
 import { Button, Form, FormGroup, FormControl } from 'react-bootstrap';
 
 import './SearchBar.css';

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { fetchBarsIfNeeded, invalidateLocation } from '../../actions'
+import { fetchBarsIfNeeded, invalidateLocation, fetchNumAttendees, putIncreaseNumAttendees } from '../../actions/yelp'
 import SearchBar from '../../components/SearchBar';
 
 import BarItem from './components/BarItem'
@@ -14,13 +14,16 @@ class Bars extends Component {
         const { dispatch, selectedLocation } = this.props
         if (selectedLocation.length !== 0) {
             dispatch(fetchBarsIfNeeded(selectedLocation))
+            dispatch(fetchNumAttendees(selectedLocation))
         }
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log('next', nextProps)
         if (nextProps.selectedLocation !== this.props.selectedLocation) {
             const { dispatch, selectedLocation } = nextProps
             dispatch(fetchBarsIfNeeded(selectedLocation))
+            dispatch(fetchNumAttendees(selectedLocation))
         }
     }
 
@@ -30,6 +33,20 @@ class Bars extends Component {
         const { dispatch, selectedLocation } = this.props
         dispatch(invalidateLocation(selectedLocation))
         dispatch(fetchBarsIfNeeded(selectedLocation))
+    }
+
+    getNumAttendees = id => {
+        const { active } = this.props
+        let filteredAttendees = active.filter((bar) => {
+            return bar.bar_id === id
+        })
+        return (filteredAttendees.length > 0) ? filteredAttendees[0].numAttendees : 0
+    }
+
+    handleAttendance = (id) => {
+        const { dispatch, selectedLocation } = this.props
+        dispatch(putIncreaseNumAttendees(id))
+        dispatch(fetchNumAttendees(selectedLocation))
     }
 
     render() {
@@ -62,9 +79,11 @@ class Bars extends Component {
                                 <div className='cards'>
                                     {bars.map((bar, i) =>
                                         <BarItem 
-                                            key={i}
-                                            bar={bar}
-                                        />
+                                                key={i}
+                                                bar={bar}
+                                                numAttendees={this.getNumAttendees(bar.id)}
+                                                handleAttendance={(id) => this.handleAttendance(id)}
+                                            />
                                     )}
                                 </div>
                             </div>
@@ -78,6 +97,7 @@ class Bars extends Component {
 Bars.propTypes = {
     selectedLocation: PropTypes.string.isRequired,
     bars: PropTypes.array.isRequired,
+    active: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired
@@ -88,15 +108,18 @@ const mapStateToProps = state => {
     const {
         isFetching,
         lastUpdated,
-        items: bars
+        items: bars,
+        activeBars: active
     } = barsByLocation[selectedLocation] || {
         isFetching: false,
-        items: []
+        items: [],
+        activeBars: []
     }
 
     return {
         selectedLocation,
         bars,
+        active,
         isFetching,
         lastUpdated
     }

@@ -43,7 +43,7 @@ class Bars extends Component {
     }
 
     render() {
-        const { selectedLocation, active, bars, isFetching, lastUpdated } = this.props
+        const { selectedLocation, bars, isFetching, lastUpdated } = this.props
         const isEmpty = bars.length === 0
         return (
             <div>

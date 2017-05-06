@@ -5,7 +5,10 @@ import * as actions from '../index'
 import { 
     REQUEST_BARS, RECEIVE_BARS, REQUEST_BARS_FAILURE,
     REQUEST_NUM_ATTENDEES, RECEIVE_NUM_ATTENDEES, REQUEST_NUM_ATTENDEES_FAILURE, 
-    SELECT_LOCATION, INVALIDATE_LOCATION 
+    SELECT_LOCATION, INVALIDATE_LOCATION,
+    REQUEST_INCREASE_NUM_ATTENDEES, REQUEST_DECREASE_NUM_ATTENDEES,
+    RECEIVE_INCREASE_NUM_ATTENDEES, RECEIVE_DECREASE_NUM_ATTENDEES,
+    REQUEST_INCREASE_NUM_ATTENDEES_FAILURE, REQUEST_DECREASE_NUM_ATTENDEES_FAILURE
 } from '../index'
 
 const mockStore = configureMockStore([thunk])
@@ -54,6 +57,52 @@ describe('Yelp sync actions', () => {
         }
 
         expect(actions.receiveBars(location, bars)).toEqual(expectedAction)
+    })
+
+    it('should create an action to request increase attendance for a bar', () => {
+        const id = 'the-loft-lubbock-2'
+        const expectedAction = {
+            type: REQUEST_INCREASE_NUM_ATTENDEES,
+            id
+        }
+
+        expect(actions.requestIncreaseNumAttendees(id)).toEqual(expectedAction)
+    })
+
+    it('should create an action to receive increase attendance for a bar', () => {
+        const id = 'the-loft-lubbock-2'
+        const activeBarsArray = [{ 'id': 'the-loft-lubbock-2', numAttendees: 2 }, { 'id': 'snake-hole-lounge', numAttendees: 4 }]
+
+        const expectedAction = {
+            type: RECEIVE_INCREASE_NUM_ATTENDEES,
+            id,
+            active: activeBarsArray
+        }
+
+        expect(actions.receiveIncreaseNumAttendees(id, activeBarsArray)).toEqual(expectedAction)
+    })
+
+    it('should create an action to request decrease attendance for a bar', () => {
+        const id = 'the-loft-lubbock-2'
+        const expectedAction = {
+            type: REQUEST_DECREASE_NUM_ATTENDEES,
+            id
+        }
+
+        expect(actions.requestDecreaseNumAttendees(id)).toEqual(expectedAction)
+    })
+
+    it('should create an action to receive decrease attendance for a bar', () => {
+        const id = 'the-loft-lubbock-2'
+        const activeBarsArray = [{ 'id': 'the-loft-lubbock-2', numAttendees: 2 }, { 'id': 'snake-hole-lounge', numAttendees: 3 }]
+
+        const expectedAction = {
+            type: RECEIVE_DECREASE_NUM_ATTENDEES,
+            id,
+            active: activeBarsArray
+        }
+
+        expect(actions.receiveDecreaseNumAttendees(id, activeBarsArray)).toEqual(expectedAction)
     })
 
     describe('shouldFetchBars', () => {
@@ -210,5 +259,91 @@ describe('Yelp async actions', () => {
         })
     })
 
-    
+    describe('putIncreaseNumAttendees', () => {
+        it('should handle putIncreaseNumAttendees success', () => {
+            const store = mockStore()
+            const id = 'the-loft-lubbock-2'
+
+            fetchMock.get(`/bars/inc/${id}`, { activeBarsArray: [{ 'id': 'the-loft-lubbock-2', numAttendees: 3 }, { 'id': 'fluffys-factory', numAttendees: 2 }] })
+
+            return store.dispatch(actions.putIncreaseNumAttendees(id))
+                .then(() => {
+                    expect(store.getActions()).toEqual([
+                        {
+                            type: REQUEST_INCREASE_NUM_ATTENDEES,
+                            id
+                        },
+                        {
+                            type: RECEIVE_INCREASE_NUM_ATTENDEES,
+                            id,
+                            active: { activeBarsArray: [{ 'id': 'the-loft-lubbock-2', numAttendees: 3 }, { 'id': 'fluffys-factory', numAttendees: 2 }] }
+                        }
+                    ])
+                })
+        })
+
+        it('should handle putIncreaseNumAttendees failure', () => {
+            const store = mockStore()
+            const id = 'the-loft-lubbock-2'
+
+            fetchMock.get(`/bars/inc/${id}`, 400)
+
+            return store.dispatch(actions.putIncreaseNumAttendees(id))
+                .then(() => {
+                    expect(store.getActions()).toEqual([
+                        {
+                            type: REQUEST_INCREASE_NUM_ATTENDEES,
+                            id
+                        },
+                        {
+                            type: REQUEST_INCREASE_NUM_ATTENDEES_FAILURE,
+                        }
+                    ])
+                })
+        })
+    })
+
+    describe('putDecreaseNumAttendees', () => {
+        it('should handle putDecreaseNumAttendees success', () => {
+            const store = mockStore()
+            const id = 'the-loft-lubbock-2'
+
+            fetchMock.get(`/bars/dec/${id}`, { activeBarsArray: [{ 'id': 'the-loft-lubbock-2', numAttendees: 2 }, { 'id': 'fluffys-factory', numAttendees: 2 }] })
+
+            return store.dispatch(actions.putDecreaseNumAttendees(id))
+                .then(() => {
+                    expect(store.getActions()).toEqual([
+                        {
+                            type: REQUEST_DECREASE_NUM_ATTENDEES,
+                            id
+                        },
+                        {
+                            type: RECEIVE_DECREASE_NUM_ATTENDEES,
+                            id,
+                            active: { activeBarsArray: [{ 'id': 'the-loft-lubbock-2', numAttendees: 2 }, { 'id': 'fluffys-factory', numAttendees: 2 }] }
+                        }
+                    ])
+                })
+        })
+
+        it('should handle putDecreaseNumAttendees failure', () => {
+            const store = mockStore()
+            const id = 'the-loft-lubbock-2'
+
+            fetchMock.get(`/bars/dec/${id}`, 400)
+
+            return store.dispatch(actions.putDecreaseNumAttendees(id))
+                .then(() => {
+                    expect(store.getActions()).toEqual([
+                        {
+                            type: REQUEST_DECREASE_NUM_ATTENDEES,
+                            id
+                        },
+                        {
+                            type: REQUEST_DECREASE_NUM_ATTENDEES_FAILURE,
+                        }
+                    ])
+                })
+        })
+    })
 })

@@ -107,6 +107,66 @@ describe('Yelp reducer', () => {
             })).toEqual(expectedState)
         })
 
+        it('should request increase numAttendees', () => {
+            const expectedState = {
+                isFetching: true,
+                didInvalidate: false,
+                items: [],
+                activeBars: []
+            }
+
+            expect(bars(undefined, {
+                type: 'REQUEST_INCREASE_NUM_ATTENDEES',
+            })).toEqual(expectedState)
+        })
+
+        it('should receive increase numAttendees', () => {
+            const activeBars = [{ 'id': 'snale-hole-lounge', 'numAttendees': 3 }, { 'id': 'Bar2', 'numAttendees': 1 }]
+            const id = 'snake-hole-lounge'
+            const expectedState = {
+                isFetching: false,
+                didInvalidate: false,
+                items: [], 
+                activeBars,
+            }
+
+            expect(bars(undefined, {
+                type: 'RECEIVE_INCREASE_NUM_ATTENDEES',
+                id,
+                active: activeBars
+            })).toEqual(expectedState)
+        })
+
+        it('should request decrease numAttendees', () => {
+            const expectedState = {
+                isFetching: true,
+                didInvalidate: false,
+                items: [],
+                activeBars: []
+            }
+
+            expect(bars(undefined, {
+                type: 'REQUEST_DECREASE_NUM_ATTENDEES',
+            })).toEqual(expectedState)
+        })
+
+        it('should receive decrease numAttendees', () => {
+            const activeBars = [{ 'id': 'snale-hole-lounge', 'numAttendees': 2 }, { 'id': 'Bar2', 'numAttendees': 1 }]
+            const id = 'snake-hole-lounge'
+            const expectedState = {
+                isFetching: false,
+                didInvalidate: false,
+                items: [], 
+                activeBars,
+            }
+
+            expect(bars(undefined, {
+                type: 'RECEIVE_DECREASE_NUM_ATTENDEES',
+                id,
+                active: activeBars
+            })).toEqual(expectedState)
+        })
+
         it('should return same state for unknown action', () => {
             const expectedState = {
                 isFetching: true,

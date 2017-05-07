@@ -19,7 +19,6 @@ class Bars extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('next', nextProps)
         if (nextProps.selectedLocation !== this.props.selectedLocation) {
             const { dispatch, selectedLocation } = nextProps
             dispatch(fetchBarsIfNeeded(selectedLocation))

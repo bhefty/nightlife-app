@@ -3,10 +3,11 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
-const config =require('config');
+const config = require('config');
 
 const yelp = require('./routes/yelp')
 const bars = require('./routes/bars')
+const auth = require('./routes/auth')
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -39,6 +40,7 @@ app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
 app.use('/yelp', yelp)
 app.use('/bars', bars)
+auth(app)
 
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', function(request, response) {

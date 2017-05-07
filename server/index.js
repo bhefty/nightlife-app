@@ -40,7 +40,7 @@ app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
 app.use('/yelp', yelp)
 app.use('/bars', bars)
-auth(app)
+app.use('/auth', auth)
 
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', function(request, response) {

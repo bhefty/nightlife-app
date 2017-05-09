@@ -162,6 +162,25 @@ describe('Yelp sync actions', () => {
             expect(typeof actions.fetchBarsIfNeeded(location)).toBe(typeof fetchBarsMock)
         })
     })
+
+    describe('firebase', () => {
+        it('should create an action to login', () => {
+            const expectedAction = {
+                type: 'LOGIN',
+                uid: '123abc'
+            }
+
+            expect(actions.login('123abc')).toEqual(expectedAction)
+        })
+
+        it('should create an action to logout', () => {
+            const expectedAction = {
+                type: 'LOGOUT'
+            }
+
+            expect(actions.logout()).toEqual(expectedAction)
+        })
+    })
 })
 
 describe('Yelp async actions', () => {

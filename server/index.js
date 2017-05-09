@@ -3,10 +3,11 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
-const config =require('config');
+const config = require('config');
 
 const yelp = require('./routes/yelp')
 const bars = require('./routes/bars')
+const auth = require('./routes/auth')
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -29,6 +30,15 @@ if (config.util.getEnv('NODE_ENV') !== 'test') {
   app.use(morgan('combined'))
 }
 
+// Enable CORS from client-side
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials')
+  res.header('Access-Control-Allow-Credentials', 'true')
+  next()
+})
+
 // parse application/json and look for raw test
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
@@ -39,6 +49,7 @@ app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
 app.use('/yelp', yelp)
 app.use('/bars', bars)
+app.use('/auth', auth)
 
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', function(request, response) {

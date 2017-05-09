@@ -2,11 +2,18 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Grid, Nav, Navbar, NavItem } from 'react-bootstrap';
+import { connect } from 'react-redux'
+import { logoutUser } from '../../actions/auth'
 
 import './Navigation.css';
 
-class Navigation extends Component {
+class Navigation extends Component {    
     render() {
+        const { authenticated } = this.props
+        let authNav = authenticated ? 
+                        <NavItem className='nav-link' onClick={() => this.props.logoutUser()}>Logout</NavItem>
+                        :
+                        <NavItem className='nav-link'>Login</NavItem>
         return (
             <Navbar id="navigation" inverse staticTop collapseOnSelect={true}>
                 <Grid>
@@ -22,7 +29,7 @@ class Navigation extends Component {
                                 <NavItem className='nav-link'>Bars</NavItem>
                             </LinkContainer>
                             <LinkContainer to='/login'>
-                                <NavItem className='nav-link'>Login</NavItem>
+                                {authNav}
                             </LinkContainer>
                         </Nav>
                     </Navbar.Collapse>
@@ -32,4 +39,10 @@ class Navigation extends Component {
     }
 }
 
-export default Navigation;
+const mapStateToProps = state => {
+    return {
+        authenticated: state.auth.authenticated
+    }
+}
+
+export default connect(mapStateToProps, { logoutUser })(Navigation);

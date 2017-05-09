@@ -12,3 +12,6 @@ config/
 # Docker
 Dockerfile
 docker-compose.yml
+
+# Allow
+!server/config/*

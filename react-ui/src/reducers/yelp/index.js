@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux'
+// import { combineReducers } from 'redux'
 import {
     SELECT_LOCATION, INVALIDATE_LOCATION,
     REQUEST_BARS, RECEIVE_BARS,
@@ -80,9 +80,9 @@ export const barsByLocation = (state = { }, action) => {
     }
 }
 
-const rootReducer = combineReducers({
-    barsByLocation,
-    selectedLocation
-})
+// const rootReducer = combineReducers({
+//     barsByLocation,
+//     selectedLocation
+// })
 
-export default rootReducer
+// export default rootReducer

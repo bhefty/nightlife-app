@@ -14,4 +14,4 @@ Dockerfile
 docker-compose.yml
 
 # Allow
-!server/config/*
+!/server/config/*

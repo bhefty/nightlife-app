@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger'
-import reducer from './reducers/yelp';
+import reducer from './reducers';
 import Routes from './routes';
+import { CookiesProvider } from 'react-cookie'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -21,6 +22,8 @@ const store = createStore(
 )
 
 ReactDOM.render(
-  <Routes store={store} />,
+  <CookiesProvider>
+    <Routes store={store} />
+  </CookiesProvider>,
   document.getElementById('root')
 );

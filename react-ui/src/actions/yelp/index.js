@@ -102,6 +102,7 @@ export const fetchBars = location => dispatch => {
             dispatch(receiveBars(location, barsArray))
         })
         .catch(() => {
+            console.log('error on yelp location?')
             dispatch({ type: REQUEST_BARS_FAILURE })
         })
 }

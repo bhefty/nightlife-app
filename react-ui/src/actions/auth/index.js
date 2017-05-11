@@ -31,7 +31,6 @@ export const loginUser = ({ email, password }) => dispatch => {
         .then(data => {
             cookie.set('token', data.token, { path: '/' })
             let fullName = (data.user.firstName + ' ' + data.user.lastName).toUpperCase()
-            console.log('name', fullName)
             dispatch({ type: types.AUTH_USER, payload: fullName })
             window.location.href = '/bars'
         })
@@ -89,7 +88,7 @@ export const fetchUserProfile = () => dispatch => {
     return fetch('/auth/dashboard', options)
         .then(response => response.json())
         .then(data => {
-            console.log('profile fech', data)
+            dispatch({ type: types.AUTH_USER })
             dispatch({
                 type: types.FETCH_USER_PROFILE,
                 payload: data.profile
@@ -117,7 +116,6 @@ export const addBarToUserProfile = (id) => dispatch => {
                 payload: data.user
             })
         })
-        .then(() => console.log('Done adding'))
 }
 
 export const removeBarFromUserProfile = (id) => dispatch => {
@@ -135,17 +133,14 @@ export const removeBarFromUserProfile = (id) => dispatch => {
     return fetch('/auth/removebar', options)
         .then(response => response.json())
         .then(data => {
-            console.log('removing', data)
             dispatch({
                 type: types.FETCH_USER_PROFILE,
                 payload: data.user
             })
         })
-        .then(() => console.log('Done remvoing'))
 }
 
 export const protectedTest = () => dispatch => {
-    console.log(cookie.get('token'))
     return fetch('/auth/dashboard', { method: 'GET', headers: { 'Authorization': cookie.get('token') } })
         .then(response => response.json())
         .then(data => {
@@ -155,7 +150,6 @@ export const protectedTest = () => dispatch => {
             })
         })
         .catch(error => {
-            console.log('error', error)
             errorHandler(dispatch, error.response, types.AUTH_ERROR)
         })
 }

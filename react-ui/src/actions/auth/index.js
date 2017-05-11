@@ -88,6 +88,7 @@ export const fetchUserProfile = () => dispatch => {
     return fetch('/auth/dashboard', options)
         .then(response => response.json())
         .then(data => {
+            dispatch({ type: types.AUTH_USER })
             dispatch({
                 type: types.FETCH_USER_PROFILE,
                 payload: data.profile
@@ -95,8 +96,51 @@ export const fetchUserProfile = () => dispatch => {
         })
 }
 
+export const addBarToUserProfile = (id) => dispatch => {
+    const token = cookie.get('token')
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            'Authorization': token
+        },
+        body: JSON.stringify({ id })
+    }
+
+    return fetch('/auth/addbar', options)
+        .then(response => response.json())
+        .then(data => {
+            dispatch({
+                type: types.FETCH_USER_PROFILE,
+                payload: data.user
+            })
+        })
+}
+
+export const removeBarFromUserProfile = (id) => dispatch => {
+    const token = cookie.get('token')
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            'Authorization': token
+        },
+        body: JSON.stringify({ id })
+    }
+
+    return fetch('/auth/removebar', options)
+        .then(response => response.json())
+        .then(data => {
+            dispatch({
+                type: types.FETCH_USER_PROFILE,
+                payload: data.user
+            })
+        })
+}
+
 export const protectedTest = () => dispatch => {
-    console.log(cookie.get('token'))
     return fetch('/auth/dashboard', { method: 'GET', headers: { 'Authorization': cookie.get('token') } })
         .then(response => response.json())
         .then(data => {
@@ -106,7 +150,6 @@ export const protectedTest = () => dispatch => {
             })
         })
         .catch(error => {
-            console.log('error', error)
             errorHandler(dispatch, error.response, types.AUTH_ERROR)
         })
 }

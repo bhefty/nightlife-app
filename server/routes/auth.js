@@ -19,8 +19,14 @@ router.get('/dashboard', requireAuth, (req, res) => {
  // Registration route
 router.post('/register', AuthenticationController.register)
 
-    // Login route
+// Login route
 router.post('/login', requireLogin, AuthenticationController.login)
+
+// Add bar to user profile
+router.post('/addbar', requireAuth, AuthenticationController.addBar)
+
+// Remove bar from user profile
+router.post('/removebar', requireAuth, AuthenticationController.removeBar)
 
 
 module.exports = router

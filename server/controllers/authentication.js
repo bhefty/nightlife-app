@@ -20,6 +20,46 @@ function setUserInfo(request) {
     }
 }
 
+// Add Bar Route
+exports.addBar = (req, res, next) => {
+    const barId = req.body.id
+
+    if (!barId) {
+        return res.status(422).send({ error: 'You must provide a bar id '})
+    }
+
+    User.findByIdAndUpdate(
+       { _id: req.user._id },
+       { $push: {'profile.barsAttending': { bar_id: barId }} },
+       { new: true },
+       (err, user) => {
+           if (err) return next(err)
+
+           res.status(200).json({ user: user.profile })
+       }
+    )
+}
+
+// Remove Bar Route
+exports.removeBar = (req, res, next) => {
+    const barId = req.body.id
+
+    if (!barId) {
+        return res.status(422).send({ error: 'You must provide a bar id '})
+    }
+
+    User.findByIdAndUpdate(
+       { _id: req.user._id },
+       { $pull: {'profile.barsAttending': { bar_id: barId }} },
+       { new: true },
+       (err, user) => {
+           if (err) return next(err)
+
+           res.status(200).json({ user: user.profile })
+       }
+    )
+}
+
 // Login Route
 exports.login = function(req, res, next) {
     let userInfo = setUserInfo(req.user)

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { fetchBarsIfNeeded, invalidateLocation, fetchNumAttendees, putIncreaseNumAttendees } from '../../actions/yelp'
+import { fetchBarsIfNeeded, invalidateLocation, fetchNumAttendees, putIncreaseNumAttendees, putDecreaseNumAttendees } from '../../actions/yelp'
+import { fetchUserProfile, addBarToUserProfile, removeBarFromUserProfile } from '../../actions/auth'
 import SearchBar from '../../components/SearchBar';
 
 import BarItem from './components/BarItem'
@@ -43,8 +44,18 @@ class Bars extends Component {
     }
 
     handleAttendance = (id) => {
-        const { dispatch, selectedLocation } = this.props
-        dispatch(putIncreaseNumAttendees(id))
+        const { dispatch, selectedLocation, profile } = this.props
+        dispatch(fetchUserProfile())
+        const barAttendedPosition = profile.barsAttending.map(bar => bar.bar_id).indexOf(id)
+        
+        if (barAttendedPosition === -1) {
+            dispatch(addBarToUserProfile(id))
+            dispatch(putIncreaseNumAttendees(id))
+        } else {
+            dispatch(removeBarFromUserProfile(id))
+            dispatch(putDecreaseNumAttendees(id))
+        }
+        
         dispatch(fetchNumAttendees(selectedLocation))
     }
 
@@ -76,14 +87,36 @@ class Bars extends Component {
                         ? (isFetching? <h2>Loading...</h2> : <h2>Please search for a location to meet</h2>)
                         : <div className='container' style={{ opacity: isFetching ? 0.5 : 1 }}>
                                 <div className='cards'>
-                                    {bars.map((bar, i) =>
-                                        <BarItem 
-                                                key={i}
-                                                bar={bar}
-                                                numAttendees={this.getNumAttendees(bar.id)}
-                                                handleAttendance={(id) => this.handleAttendance(id)}
-                                            />
-                                    )}
+                                    {bars.map((bar, i) => {
+                                        if (this.props.authenticated) {
+                                            const barAttendedPosition = this.props.profile.barsAttending.map(bar => bar.bar_id).indexOf(bar.id)
+                                            const buttonText = (barAttendedPosition === -1) ? 'Count me in!' : 'Sorry, can\'t go!'
+                                            const buttonColor = (barAttendedPosition === -1) ? 'btn-success' : 'btn-danger'
+                                       
+                                            return (
+                                                <BarItem 
+                                                        key={i}
+                                                        bar={bar}
+                                                        numAttendees={this.getNumAttendees(bar.id)}
+                                                        handleAttendance={(id) => this.handleAttendance(id)}
+                                                        buttonText={buttonText}
+                                                        buttonColor={buttonColor}
+                                                    />
+                                            )
+                                        } else {
+                                       
+                                            return (
+                                                <BarItem 
+                                                        key={i}
+                                                        bar={bar}
+                                                        numAttendees={this.getNumAttendees(bar.id)}
+                                                        handleAttendance={(id) => this.handleAttendance(id)}
+                                                    />
+                                            )
+                                        }
+                                        
+                                        
+                                    })}
                                 </div>
                             </div>
                     }
@@ -115,12 +148,15 @@ const mapStateToProps = state => {
         activeBars: []
     }
 
+    const { authenticated, profile } = state.auth
     return {
         selectedLocation,
         bars,
         active,
         isFetching,
-        lastUpdated
+        lastUpdated,
+        authenticated,
+        profile
     }
 }
 

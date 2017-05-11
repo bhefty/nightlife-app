@@ -9,7 +9,10 @@ const getAccessToken = require('../utilities/access_token');
 
 // Get accessToken from Yelp to use other APIs
 let access_token;
-getAccessToken(config.CLIENT_ID, config.CLIENT_SECRET)
+const CLIENT_ID = process.env.CLIENT_ID || config.CLIENT_ID
+const CLIENT_SECRET = process.env.CLIENT_SECRET || config.CLIENT_SECRET
+
+getAccessToken(CLIENT_ID, CLIENT_SECRET)
     .then(token => access_token = token.access_token)
 
 // Restructure the bar information returned from Yelp
@@ -36,6 +39,7 @@ function mapBars(bars) {
 // GET /bars/:location route to see bars in the area
 router.get('/:location', (req, res) => {
     console.log('Inside /yelp/location')
+    console.log('access token', access_token)
     return new Promise((resolve, reject) => {
         const location = req.params.location
         if (!location) reject({ 'message': 'No location provided' })

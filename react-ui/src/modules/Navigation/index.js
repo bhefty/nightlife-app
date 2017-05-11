@@ -25,9 +25,6 @@ class Navigation extends Component {
                     </Navbar.Header>
                     <Navbar.Collapse>
                         <Nav pullRight>
-                            <LinkContainer to='/bars'>
-                                <NavItem className='nav-link'>Bars</NavItem>
-                            </LinkContainer>
                             <LinkContainer to='/login'>
                                 {authNav}
                             </LinkContainer>

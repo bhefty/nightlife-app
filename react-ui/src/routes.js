@@ -6,7 +6,6 @@ import Cookies from 'universal-cookie'
 const cookie = new Cookies()
 
 import Navigation from './modules/Navigation';
-import App from './modules/App';
 import Login from './modules/Login';
 import Bars from './modules/Bars';
 
@@ -20,9 +19,8 @@ const Routes = ({ store }) => {
             <Router>
                 <div className='router'>
                     <Navigation />
-                    <Route exact path='/' component={App} />
+                    <Route exact path='/' component={Bars} />
                     <Route path='/login' component={Login} />
-                    <Route path='/bars' component={Bars} />
                 </div>
             </Router>
         </Provider>

@@ -32,11 +32,7 @@ class SearchBar extends Component {
                 dispatch(fetchBarsIfNeeded(selectedLocation))
             }
         }
-        this.props.history.push(
-            {
-                pathname: '/bars'
-            }
-        )
+        
         this.setState({searchValue: ''})
     }
 

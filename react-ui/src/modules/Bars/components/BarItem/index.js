@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { LinkContainer } from 'react-router-bootstrap';
 import StarRatingComponent from 'react-star-rating-component'
 import './BarItem.css'
 import { Button } from 'react-bootstrap'
@@ -62,9 +63,17 @@ class BarItem extends Component {
                             )}
                         </ul>
                     </span>
-                    <span className='card-meta'>
-                        <Button block className={`btn ${buttonColor}`} onClick={() => handleAttendance(bar.id)}>{buttonText}</Button>
-                    </span>
+                    {(buttonText && buttonColor) ?
+                        <span className='card-meta'>
+                            <Button block className={`btn ${buttonColor}`} onClick={() => handleAttendance(bar.id)}>{buttonText}</Button>
+                        </span>
+                        :
+                        <LinkContainer to='/login'>
+                            <span className='card-meta'>
+                                <Button block className={`btn btn-info`}>Sign in to join!</Button>
+                            </span>
+                        </LinkContainer>
+                    }
                 </span>
             </Waypoint>
         )

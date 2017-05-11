@@ -88,21 +88,35 @@ class Bars extends Component {
                         : <div className='container' style={{ opacity: isFetching ? 0.5 : 1 }}>
                                 <div className='cards'>
                                     {bars.map((bar, i) => {
-                                        const barAttendedPosition = this.props.profile.barsAttending.map(bar => bar.bar_id).indexOf(bar.id)
-                                        const buttonText = (barAttendedPosition === -1) ? 'Count me in!' : 'Sorry, can\'t go!'
-                                        const buttonColor = (barAttendedPosition === -1) ? 'btn-success' : 'btn-danger'
-                                        return (
-                                            <BarItem 
-                                                    key={i}
-                                                    bar={bar}
-                                                    numAttendees={this.getNumAttendees(bar.id)}
-                                                    handleAttendance={(id) => this.handleAttendance(id)}
-                                                    buttonText={buttonText}
-                                                    buttonColor={buttonColor}
-                                                />
-                                        )
+                                        if (this.props.authenticated) {
+                                            const barAttendedPosition = this.props.profile.barsAttending.map(bar => bar.bar_id).indexOf(bar.id)
+                                            const buttonText = (barAttendedPosition === -1) ? 'Count me in!' : 'Sorry, can\'t go!'
+                                            const buttonColor = (barAttendedPosition === -1) ? 'btn-success' : 'btn-danger'
+                                       
+                                            return (
+                                                <BarItem 
+                                                        key={i}
+                                                        bar={bar}
+                                                        numAttendees={this.getNumAttendees(bar.id)}
+                                                        handleAttendance={(id) => this.handleAttendance(id)}
+                                                        buttonText={buttonText}
+                                                        buttonColor={buttonColor}
+                                                    />
+                                            )
+                                        } else {
+                                       
+                                            return (
+                                                <BarItem 
+                                                        key={i}
+                                                        bar={bar}
+                                                        numAttendees={this.getNumAttendees(bar.id)}
+                                                        handleAttendance={(id) => this.handleAttendance(id)}
+                                                    />
+                                            )
                                         }
-                                    )}
+                                        
+                                        
+                                    })}
                                 </div>
                             </div>
                     }
@@ -134,13 +148,14 @@ const mapStateToProps = state => {
         activeBars: []
     }
 
-    const { profile } = state.auth
+    const { authenticated, profile } = state.auth
     return {
         selectedLocation,
         bars,
         active,
         isFetching,
         lastUpdated,
+        authenticated,
         profile
     }
 }

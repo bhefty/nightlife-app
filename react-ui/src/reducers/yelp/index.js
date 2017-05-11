@@ -84,10 +84,3 @@ export const barsByLocation = (state = { }, action) => {
             return state
     }
 }
-
-// const rootReducer = combineReducers({
-//     barsByLocation,
-//     selectedLocation
-// })
-
-// export default rootReducer

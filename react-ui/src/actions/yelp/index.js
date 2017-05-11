@@ -12,8 +12,6 @@ export const RECEIVE_INCREASE_NUM_ATTENDEES = 'RECEIVE_INCREASE_NUM_ATTENDEES'
 export const RECEIVE_DECREASE_NUM_ATTENDEES = 'RECEIVE_DECREASE_NUM_ATTENDEES'
 export const REQUEST_INCREASE_NUM_ATTENDEES_FAILURE = 'REQUEST_INCREASE_NUM_ATTENDEES_FAILURE'
 export const REQUEST_DECREASE_NUM_ATTENDEES_FAILURE = 'REQUEST_DECREASE_NUM_ATTENDEES_FAILURE'
-export const LOGIN = 'LOGIN'
-export const LOGOUT = 'LOGOUT'
 export const REFRESHED_ATTENDEES = 'REFRESHED_ATTENDEES'
 
 export const selectLocation = location => ({
@@ -142,20 +140,3 @@ export const fetchBarsIfNeeded = location => (dispatch, getState) => {
         return dispatch(fetchBars(location))
     }
 }
-
-export const login = uid => ({
-    type: LOGIN,
-    uid
-})
-
-export const logout = () => ({
-    type: LOGOUT
-})
-
-// export const startLogin = () => (dispatch, getState) => {
-
-// }
-
-// export const startLogout = () => (dispatch, getState) => {
-
-// }

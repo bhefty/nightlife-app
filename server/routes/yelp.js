@@ -17,7 +17,6 @@ getAccessToken(CLIENT_ID, CLIENT_SECRET)
 
 // Restructure the bar information returned from Yelp
 function mapBars(bars) {
-    console.log('mapping bars')
     return new Promise((resolve, reject) => {
         if (!bars) reject({'message': 'No bars listed'})
         resolve(bars.map((bar) => {
@@ -38,8 +37,6 @@ function mapBars(bars) {
 
 // GET /bars/:location route to see bars in the area
 router.get('/:location', (req, res) => {
-    console.log('Inside /yelp/location')
-    console.log('access token', access_token)
     return new Promise((resolve, reject) => {
         const location = req.params.location
         if (!location) reject({ 'message': 'No location provided' })
@@ -53,7 +50,6 @@ router.get('/:location', (req, res) => {
         }
 
         request(options, (error, response, body) => {
-            console.log('got results', JSON.parse(body))
             if (error) reject(error)
             let barsList = JSON.parse(body)
             mapBars(barsList.businesses)

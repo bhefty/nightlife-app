@@ -72,7 +72,7 @@ export const receiveDecreaseNumAttendees = (id, attendeesArray) => ({
 
 export const putIncreaseNumAttendees = id => dispatch => {
     dispatch(requestIncreaseNumAttendees(id))
-    return fetch(`/bars/inc/${id}`, {method: 'PUT'})
+    return fetch(`/api/bars/inc/${id}`, {method: 'PUT'})
         .then(response => response.json())
         .then(attendeesArray => {
             dispatch(receiveIncreaseNumAttendees(id, attendeesArray))
@@ -84,7 +84,7 @@ export const putIncreaseNumAttendees = id => dispatch => {
 
 export const putDecreaseNumAttendees = id => dispatch => {
     dispatch(requestDecreaseNumAttendees(id))
-    return fetch(`/bars/dec/${id}`, {method: 'PUT'})
+    return fetch(`/api/bars/dec/${id}`, {method: 'PUT'})
         .then(response => response.json())
         .then(attendeesArray => {
             dispatch(receiveDecreaseNumAttendees(id, attendeesArray))
@@ -96,7 +96,7 @@ export const putDecreaseNumAttendees = id => dispatch => {
 
 export const fetchBars = location => dispatch => {
     dispatch(requestBars(location))
-    return fetch(`/yelp/${location}`)
+    return fetch(`/api/yelp/${location}`)
         .then(response => response.json())
         .then(barsArray => {
             dispatch(receiveBars(location, barsArray))
@@ -108,7 +108,7 @@ export const fetchBars = location => dispatch => {
 
 export const fetchNumAttendees = location => dispatch => {
     dispatch(requestNumAttendees(location))
-    return fetch('/bars/')
+    return fetch('/api/bars/')
         .then(response => response.json())
         .then(attendeesArray => {
             dispatch(receiveNumAttendees(location, attendeesArray))

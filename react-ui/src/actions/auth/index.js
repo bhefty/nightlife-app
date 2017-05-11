@@ -23,7 +23,7 @@ export const loginUser = ({ email, password }) => dispatch => {
         })
     }
 
-    return fetch('/auth/login', options)
+    return fetch('/api/auth/login', options)
         .then(response => {
             if (response.status === 401) throw Error('An error occurred. Please verify your login credentials and try again.')
             return response.json()
@@ -54,7 +54,7 @@ export const registerUser = ({ email, firstName, lastName, password }) => dispat
         })
     }
 
-    return fetch('/auth/register', options)
+    return fetch('/api/auth/register', options)
         .then(response => {
             if (response.status === 422) throw Error('Email is already in use.')
             return response.json()
@@ -85,7 +85,7 @@ export const fetchUserProfile = () => dispatch => {
             'Authorization': token
         }
     }
-    return fetch('/auth/dashboard', options)
+    return fetch('/api/auth/dashboard', options)
         .then(response => response.json())
         .then(data => {
             dispatch({ type: types.AUTH_USER })
@@ -108,7 +108,7 @@ export const addBarToUserProfile = (id) => dispatch => {
         body: JSON.stringify({ id })
     }
 
-    return fetch('/auth/addbar', options)
+    return fetch('/api/auth/addbar', options)
         .then(response => response.json())
         .then(data => {
             dispatch({
@@ -130,7 +130,7 @@ export const removeBarFromUserProfile = (id) => dispatch => {
         body: JSON.stringify({ id })
     }
 
-    return fetch('/auth/removebar', options)
+    return fetch('/api/auth/removebar', options)
         .then(response => response.json())
         .then(data => {
             dispatch({
@@ -141,7 +141,7 @@ export const removeBarFromUserProfile = (id) => dispatch => {
 }
 
 export const protectedTest = () => dispatch => {
-    return fetch('/auth/dashboard', { method: 'GET', headers: { 'Authorization': cookie.get('token') } })
+    return fetch('/api/auth/dashboard', { method: 'GET', headers: { 'Authorization': cookie.get('token') } })
         .then(response => response.json())
         .then(data => {
             dispatch({

@@ -47,9 +47,9 @@ app.use(bodyParser.json({type: 'application/json'}))
 // Priority serve any static files.
 app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
-app.use('/yelp', yelp)
-app.use('/bars', bars)
-app.use('/auth', auth)
+app.use('/api/yelp', yelp)
+app.use('/api/bars', bars)
+app.use('/api/auth', auth)
 
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', function(request, response) {

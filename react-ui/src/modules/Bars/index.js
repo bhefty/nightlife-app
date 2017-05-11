@@ -47,14 +47,6 @@ class Bars extends Component {
         }
     }
 
-    handleRefreshClick = e => {
-        e.preventDefault()
-
-        const { dispatch, selectedLocation } = this.props
-        dispatch(invalidateLocation(selectedLocation))
-        dispatch(fetchBarsIfNeeded(selectedLocation))
-    }
-
     getNumAttendees = id => {
         const { active } = this.props
         let filteredAttendees = active.filter((bar) => {
@@ -80,31 +72,18 @@ class Bars extends Component {
     }
 
     render() {
-        const { selectedLocation, bars, isFetching, lastUpdated } = this.props
+        const { selectedLocation, bars, isFetching } = this.props
         const isEmpty = bars.length === 0
         return (
             <div>
                 <SearchBar />
                 <div className='bars-container'>
-                    <span>
-                        {!isFetching && !isEmpty &&
+                    {!isFetching && !isEmpty &&
+                        <span>
+                            <p className='lead'>Displaying locations for:</p>
                             <h1>{selectedLocation.toUpperCase()}</h1>
-                        }
-                    </span>
-                    <p>
-                        {!isFetching && lastUpdated &&
-                            <span>
-                                Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
-                                <br/>
-                            </span>
-                        }
-                        {!isFetching && !isEmpty &&
-                            <a href='#'
-                                onClick={this.handleRefreshClick}>
-                                Refresh results
-                            </a>
-                        }
-                    </p>
+                        </span>
+                    }
                     {isEmpty
                         ? (isFetching ? <Loading /> : <Placeholder />)
                         : <div className='container' style={{ opacity: isFetching ? 0.5 : 1 }}>
@@ -153,7 +132,6 @@ Bars.propTypes = {
     bars: PropTypes.array.isRequired,
     active: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
-    lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired
 }
 
@@ -161,7 +139,6 @@ const mapStateToProps = state => {
     const { selectedLocation, barsByLocation } = state
     const {
         isFetching,
-        lastUpdated,
         items: bars,
         activeBars: active
     } = barsByLocation[selectedLocation] || {
@@ -176,7 +153,6 @@ const mapStateToProps = state => {
         bars,
         active,
         isFetching,
-        lastUpdated,
         authenticated,
         profile
     }

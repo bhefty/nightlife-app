@@ -1,6 +1,6 @@
 import * as types from '../../actions/types'
 
-const INITIAL_STATE = { error: '', message: '', content: '', authenticated: false }
+const INITIAL_STATE = { error: '', message: '', content: '', authenticated: false, profile: {} }
 
 export default function (state = INITIAL_STATE, action) {
     switch(action.type) {

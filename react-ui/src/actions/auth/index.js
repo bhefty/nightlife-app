@@ -100,8 +100,8 @@ export const addLocationToProfile = (location) => dispatch => {
     const token = cookie.get('token')
 
     const options = {
-        mtehod: 'POST',
-        header: {
+        method: 'POST',
+        headers: {
             'content-type': 'application/json',
             'Authorization': token
         },

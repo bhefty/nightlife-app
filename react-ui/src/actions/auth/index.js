@@ -96,6 +96,28 @@ export const fetchUserProfile = () => dispatch => {
         })
 }
 
+export const addLocationToProfile = (location) => dispatch => {
+    const token = cookie.get('token')
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            'Authorization': token
+        },
+        body: JSON.stringify({ location })
+    }
+
+    return fetch('/api/auth/savelocation', options)
+        .then(response => response.json())
+        .then(data => {
+            dispatch({
+                type: types.FETCH_USER_PROFILE,
+                payload: data.user
+            })
+        })
+}
+
 export const addBarToUserProfile = (id) => dispatch => {
     const token = cookie.get('token')
 

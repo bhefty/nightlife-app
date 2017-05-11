@@ -20,12 +20,32 @@ function setUserInfo(request) {
     }
 }
 
+// Save Location
+exports.saveLocation = (req, res, next) => {
+    const location = req.body.location
+
+    if (!location) {
+        return res.status(422).send({ error: 'You must provide a location' })
+    }
+
+    User.findByIdAndUpdate(
+        { _id: req.user._id },
+        { $set: { 'profile.lastLocation': location } },
+        { new: true },
+        (err, user) => {
+            if (err) return next(err)
+
+            res.status(200).json({ user: user.profile })
+        }
+    )
+}
+
 // Add Bar Route
 exports.addBar = (req, res, next) => {
     const barId = req.body.id
 
     if (!barId) {
-        return res.status(422).send({ error: 'You must provide a bar id '})
+        return res.status(422).send({ error: 'You must provide a bar id' })
     }
 
     User.findByIdAndUpdate(
@@ -45,7 +65,7 @@ exports.removeBar = (req, res, next) => {
     const barId = req.body.id
 
     if (!barId) {
-        return res.status(422).send({ error: 'You must provide a bar id '})
+        return res.status(422).send({ error: 'You must provide a bar id' })
     }
 
     User.findByIdAndUpdate(

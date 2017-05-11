@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { fetchBarsIfNeeded, invalidateLocation, fetchNumAttendees, putIncreaseNumAttendees, putDecreaseNumAttendees } from '../../actions/yelp'
-import { fetchUserProfile, addBarToUserProfile, removeBarFromUserProfile } from '../../actions/auth'
+import { selectLocation, fetchBarsIfNeeded, invalidateLocation, fetchNumAttendees, putIncreaseNumAttendees, putDecreaseNumAttendees } from '../../actions/yelp'
+import { fetchUserProfile, addBarToUserProfile, removeBarFromUserProfile, addLocationToProfile } from '../../actions/auth'
 import SearchBar from '../../components/SearchBar';
 
 import BarItem from './components/BarItem'
@@ -11,8 +11,15 @@ import BarItem from './components/BarItem'
 import './Bars.css'
 
 class Bars extends Component {
+    constructor() {
+        super()
+        this.state = {
+            initSearch: true
+        }
+    }
     componentDidMount() {
         const { dispatch, selectedLocation } = this.props
+        
         if (selectedLocation.length !== 0) {
             dispatch(fetchBarsIfNeeded(selectedLocation))
             dispatch(fetchNumAttendees(selectedLocation))
@@ -20,10 +27,19 @@ class Bars extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if (nextProps.profile.lastLocation) {
+            if (nextProps.profile.lastLocation.length !== 0 && this.state.initSearch) {
+                const { dispatch, selectedLocation, profile } = nextProps
+                dispatch(selectLocation(profile.lastLocation))
+                dispatch(invalidateLocation(selectedLocation))
+                this.setState({ initSearch: false })
+            }
+        }
         if (nextProps.selectedLocation !== this.props.selectedLocation) {
             const { dispatch, selectedLocation } = nextProps
             dispatch(fetchBarsIfNeeded(selectedLocation))
             dispatch(fetchNumAttendees(selectedLocation))
+            dispatch(addLocationToProfile(selectedLocation))
         }
     }
 

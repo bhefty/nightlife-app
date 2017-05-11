@@ -31,6 +31,7 @@ export const loginUser = ({ email, password }) => dispatch => {
         .then(data => {
             cookie.set('token', data.token, { path: '/' })
             let fullName = (data.user.firstName + ' ' + data.user.lastName).toUpperCase()
+            console.log('name', fullName)
             dispatch({ type: types.AUTH_USER, payload: fullName })
             window.location.href = '/bars'
         })
@@ -88,11 +89,59 @@ export const fetchUserProfile = () => dispatch => {
     return fetch('/auth/dashboard', options)
         .then(response => response.json())
         .then(data => {
+            console.log('profile fech', data)
             dispatch({
                 type: types.FETCH_USER_PROFILE,
                 payload: data.profile
             })
         })
+}
+
+export const addBarToUserProfile = (id) => dispatch => {
+    const token = cookie.get('token')
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            'Authorization': token
+        },
+        body: JSON.stringify({ id })
+    }
+
+    return fetch('/auth/addbar', options)
+        .then(response => response.json())
+        .then(data => {
+            dispatch({
+                type: types.FETCH_USER_PROFILE,
+                payload: data.user
+            })
+        })
+        .then(() => console.log('Done adding'))
+}
+
+export const removeBarFromUserProfile = (id) => dispatch => {
+    const token = cookie.get('token')
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            'Authorization': token
+        },
+        body: JSON.stringify({ id })
+    }
+
+    return fetch('/auth/removebar', options)
+        .then(response => response.json())
+        .then(data => {
+            console.log('removing', data)
+            dispatch({
+                type: types.FETCH_USER_PROFILE,
+                payload: data.user
+            })
+        })
+        .then(() => console.log('Done remvoing'))
 }
 
 export const protectedTest = () => dispatch => {

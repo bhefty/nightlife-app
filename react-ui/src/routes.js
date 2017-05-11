@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { fetchUserProfile } from './actions/auth'
 import Cookies from 'universal-cookie'
 const cookie = new Cookies()
 
@@ -12,8 +13,7 @@ import Bars from './modules/Bars';
 const Routes = ({ store }) => {
     const token = cookie.get('token')
     if (token) {
-        
-        store.dispatch({ type: 'AUTH_USER' })
+        store.dispatch(fetchUserProfile())
     }
     return (
         <Provider store={store}>

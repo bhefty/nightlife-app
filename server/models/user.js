@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const bcrypt = require('bcrypt-nodejs')
 
+const BarsAttendingSchema = new Schema({ bar_id: String })
+
 const UserSchema = new Schema({
     email: {
         type: String,
@@ -15,7 +17,8 @@ const UserSchema = new Schema({
     },
     profile: {
         firstName: { type: String },
-        lastName: { type: String }
+        lastName: { type: String },
+        barsAttending: [BarsAttendingSchema]
     },
     resetPasswordToken: { type: String },
     resetPasswordExpires: { type: Date }

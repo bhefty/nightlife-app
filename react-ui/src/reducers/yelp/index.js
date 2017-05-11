@@ -4,7 +4,8 @@ import {
     REQUEST_BARS, RECEIVE_BARS,
     REQUEST_NUM_ATTENDEES, RECEIVE_NUM_ATTENDEES,
     REQUEST_INCREASE_NUM_ATTENDEES, REQUEST_DECREASE_NUM_ATTENDEES,
-    RECEIVE_INCREASE_NUM_ATTENDEES, RECEIVE_DECREASE_NUM_ATTENDEES
+    RECEIVE_INCREASE_NUM_ATTENDEES, RECEIVE_DECREASE_NUM_ATTENDEES,
+    REFRESHED_ATTENDEES
 } from '../../actions/yelp'
 
 export const selectedLocation = (state = '', action) => {
@@ -28,6 +29,11 @@ export const bars = (state = {
                 ...state,
                 didInvalidate: true
             }
+        case REFRESHED_ATTENDEES:
+            return {
+                ...state,
+                isFetching: false
+            }
         case REQUEST_NUM_ATTENDEES:
         case REQUEST_INCREASE_NUM_ATTENDEES:
         case REQUEST_DECREASE_NUM_ATTENDEES:
@@ -41,8 +47,6 @@ export const bars = (state = {
         case RECEIVE_DECREASE_NUM_ATTENDEES:
             return {
                 ...state,
-                isFetching: false,
-                didInvalidate: false,
                 activeBars: action.active
             }
         case REQUEST_BARS:
@@ -67,6 +71,7 @@ export const bars = (state = {
 export const barsByLocation = (state = { }, action) => {
     switch (action.type) {
         case INVALIDATE_LOCATION:
+        case REFRESHED_ATTENDEES:
         case RECEIVE_NUM_ATTENDEES:
         case REQUEST_NUM_ATTENDEES:
         case RECEIVE_BARS:

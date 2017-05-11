@@ -32,7 +32,7 @@ export const loginUser = ({ email, password }) => dispatch => {
             cookie.set('token', data.token, { path: '/' })
             let fullName = (data.user.firstName + ' ' + data.user.lastName).toUpperCase()
             dispatch({ type: types.AUTH_USER, payload: fullName })
-            window.location.href = '/bars'
+            window.location.href = '/'
         })
         .catch(error => {
             errorHandler(dispatch, error, types.AUTH_ERROR)
@@ -62,7 +62,7 @@ export const registerUser = ({ email, firstName, lastName, password }) => dispat
         .then(data => {
             cookie.set('token', data.token, { path: '/' })
             dispatch({ type: types.AUTH_USER })
-            window.location.href = '/bars'
+            window.location.href = '/'
         })
         .catch((error) => {
             errorHandler(dispatch, error, types.AUTH_ERROR)

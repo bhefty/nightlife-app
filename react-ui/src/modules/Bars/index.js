@@ -5,6 +5,8 @@ import { withRouter } from 'react-router-dom'
 import { selectLocation, fetchBarsIfNeeded, invalidateLocation, fetchNumAttendees, putIncreaseNumAttendees, putDecreaseNumAttendees } from '../../actions/yelp'
 import { fetchUserProfile, addBarToUserProfile, removeBarFromUserProfile, addLocationToProfile } from '../../actions/auth'
 import SearchBar from '../../components/SearchBar';
+import Placeholder from './components/Placeholder'
+import Loading from './components/Loading'
 
 import BarItem from './components/BarItem'
 
@@ -39,7 +41,9 @@ class Bars extends Component {
             const { dispatch, selectedLocation } = nextProps
             dispatch(fetchBarsIfNeeded(selectedLocation))
             dispatch(fetchNumAttendees(selectedLocation))
-            dispatch(addLocationToProfile(selectedLocation))
+            if (nextProps.authenticated) {
+                dispatch(addLocationToProfile(selectedLocation))
+            }
         }
     }
 
@@ -83,10 +87,12 @@ class Bars extends Component {
                 <SearchBar />
                 <div className='bars-container'>
                     <span>
-                        <h1>{selectedLocation.toUpperCase()}</h1>
+                        {!isFetching && !isEmpty &&
+                            <h1>{selectedLocation.toUpperCase()}</h1>
+                        }
                     </span>
                     <p>
-                        {lastUpdated &&
+                        {!isFetching && lastUpdated &&
                             <span>
                                 Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
                                 <br/>
@@ -100,7 +106,7 @@ class Bars extends Component {
                         }
                     </p>
                     {isEmpty
-                        ? (isFetching? <h2>Loading...</h2> : <h2>Please search for a location to meet</h2>)
+                        ? (isFetching ? <Loading /> : <Placeholder />)
                         : <div className='container' style={{ opacity: isFetching ? 0.5 : 1 }}>
                                 <div className='cards'>
                                     {bars.map((bar, i) => {

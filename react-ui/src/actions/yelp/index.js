@@ -14,6 +14,7 @@ export const REQUEST_INCREASE_NUM_ATTENDEES_FAILURE = 'REQUEST_INCREASE_NUM_ATTE
 export const REQUEST_DECREASE_NUM_ATTENDEES_FAILURE = 'REQUEST_DECREASE_NUM_ATTENDEES_FAILURE'
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
+export const REFRESHED_ATTENDEES = 'REFRESHED_ATTENDEES'
 
 export const selectLocation = location => ({
     type: SELECT_LOCATION,
@@ -22,6 +23,11 @@ export const selectLocation = location => ({
 
 export const invalidateLocation = location => ({
     type: INVALIDATE_LOCATION,
+    location
+})
+
+export const refreshAttendees = location => ({
+    type: REFRESHED_ATTENDEES,
     location
 })
 
@@ -113,6 +119,7 @@ export const fetchNumAttendees = location => dispatch => {
         .then(response => response.json())
         .then(attendeesArray => {
             dispatch(receiveNumAttendees(location, attendeesArray))
+            dispatch(refreshAttendees(location))
         })
         .catch(() => {
             dispatch({ type: REQUEST_NUM_ATTENDEES_FAILURE })

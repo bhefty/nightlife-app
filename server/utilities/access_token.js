@@ -15,6 +15,7 @@ const getAccessToken = (CLIENT_ID, CLIENT_SECRET) => {
                 grant_type: 'client_credentials' 
             } 
         };
+        if (!CLIENT_ID || !CLIENT_SECRET) reject({ message: 'Did not provide CLIENT_ID or CLIENT_SECRET' })
 
         request(options, function (error, response, body) {
             if (error) {

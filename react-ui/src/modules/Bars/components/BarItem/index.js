@@ -68,11 +68,12 @@ class BarItem extends Component {
                             <Button block className={`btn ${buttonColor}`} onClick={() => handleAttendance(bar.id)}>{buttonText}</Button>
                         </span>
                         :
-                        <LinkContainer to='/login'>
-                            <span className='card-meta'>
+                        <span className='card-meta'>
+                            <LinkContainer to='/login'>
                                 <Button block className={`btn btn-info`}>Sign in to join!</Button>
-                            </span>
-                        </LinkContainer>
+                            </LinkContainer>
+                        </span>
+                        
                     }
                 </span>
             </Waypoint>

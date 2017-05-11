@@ -35,6 +35,7 @@
     padding: 10px;
     background-color: rgba(92, 184, 92, 0.55);
     color: #fff;
+    font-size: 20px;
   }
 
   .card-summary {
@@ -112,6 +113,11 @@
     transition-property: max-height;
     transition-duration: 0.4s;
     transition-timing-function: ease-in-out;
+     
+    a {
+      background-color: #5BC0DE;
+      color: white;
+    }
   }
 
   &:hover, &:focus, &.card-focus {

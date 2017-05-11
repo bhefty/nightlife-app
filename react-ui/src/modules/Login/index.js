@@ -17,7 +17,6 @@ class Login extends Component {
     }
 
     handleView() {
-        console.log('handle', this.state.loginView)
         this.setState({ loginView: !this.state.loginView })
     }
 
@@ -54,8 +53,7 @@ class Login extends Component {
 }
 const mapStateToProps = state => {
     return { 
-        authenticated: state.auth.authenticated,
-        profile: state.auth.profile
+        authenticated: state.auth.authenticated
     }
 }
 

@@ -28,5 +28,8 @@ router.post('/addbar', requireAuth, AuthenticationController.addBar)
 // Remove bar from user profile
 router.post('/removebar', requireAuth, AuthenticationController.removeBar)
 
+// Save location to user profile
+router.post('/savelocation', requireAuth, AuthenticationController.saveLocation)
+
 
 module.exports = router

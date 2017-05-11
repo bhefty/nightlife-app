@@ -18,6 +18,7 @@ const UserSchema = new Schema({
     profile: {
         firstName: { type: String },
         lastName: { type: String },
+        lastLocation: { type: String },
         barsAttending: [BarsAttendingSchema]
     },
     resetPasswordToken: { type: String },

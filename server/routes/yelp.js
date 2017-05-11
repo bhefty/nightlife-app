@@ -36,6 +36,7 @@ function mapBars(bars) {
 router.get('/:location', (req, res) => {
     return new Promise((resolve, reject) => {
         const location = req.params.location
+        if (!location) reject({ 'message': 'No location provided' })
         const options = {
             method: 'GET',
             url: 'https://api.yelp.com/v3/businesses/search',

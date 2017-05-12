@@ -34,6 +34,7 @@ class SearchBar extends Component {
         }
         
         this.setState({searchValue: ''})
+        this.props.onSubmit()
     }
 
     render() {
@@ -49,7 +50,7 @@ class SearchBar extends Component {
                             onChange={this.handleChange}
                             value={this.state.searchValue}
                             type='text' 
-                            placeholder='Search by location (e.g. zipcode or cityname)' />
+                            placeholder='Example: zipcode or cityname' />
                     </FormGroup>
                     <Button block className='btn btn-success btn-lg' type='submit'>Search</Button>
                 </Form>

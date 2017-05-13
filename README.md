@@ -2,7 +2,7 @@
 
 This project was built for the FreeCodeCamp curriculum.
 
-## [View the demo site here](billhefty-nightlife-app.herokuapp.com)
+## [View the demo site here](http://billhefty-nightlife-app.herokuapp.com)
 
 ### Objective:
 Build a full stack JavaScript app that is functionally similar to this: [http://whatsgoinontonight.herokuapp.com/](http://whatsgoinontonight.herokuapp.com/) and deploy it to Heroku.

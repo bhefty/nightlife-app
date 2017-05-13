@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
+import scrollToComponent from 'react-scroll-to-component'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { selectLocation, fetchBarsIfNeeded, invalidateLocation, fetchNumAttendees, putIncreaseNumAttendees, putDecreaseNumAttendees } from '../../actions/yelp'
@@ -16,8 +17,10 @@ class Bars extends Component {
     constructor() {
         super()
         this.state = {
-            initSearch: true
+            initSearch: true,
+            resultsDiv: null
         }
+        this.handleSmoothScroll = this.handleSmoothScroll.bind(this)
     }
     componentDidMount() {
         const { dispatch, selectedLocation } = this.props
@@ -71,13 +74,20 @@ class Bars extends Component {
         dispatch(fetchNumAttendees(selectedLocation))
     }
 
+    handleSmoothScroll = () => {
+        scrollToComponent(this.Results, {
+            align: 'top',
+            duration: 200
+        })
+    }
+
     render() {
         const { selectedLocation, bars, isFetching } = this.props
         const isEmpty = bars.length === 0
         return (
             <div>
                 <SearchBar />
-                <div className='bars-container'>
+                <div className='bars-container' ref={(ref) => this.Results = ref}>
                     {!isFetching && !isEmpty &&
                         <span>
                             <p className='lead'>Displaying locations for:</p>

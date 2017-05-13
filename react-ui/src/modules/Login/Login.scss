@@ -1,9 +1,24 @@
 .login-parent {
-    
     .login-container {
         text-align: center;
         max-width: 600px;
         margin: 0 auto;
-        margin-top: 50px;
+        margin-top: 20px;
+
+        .svg-lock {
+            margin: 0 auto;
+            max-width: 150px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .login-container {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .svg-lock {
+            display: none;
+        }
     }
 }

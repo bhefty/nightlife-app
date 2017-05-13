@@ -1,11 +1,15 @@
 const passport = require('passport'),
       User = require('../models/user'),
       JwtStrategy = require('passport-jwt').Strategy,
+      GitHubStrategy = require('passport-github').Strategy
       ExtractJwt = require('passport-jwt').ExtractJwt,
       LocalStrategy = require('passport-local'),
       config = require('config')
       
 const PASSPORT_SECRET = process.env.PASSPORT_SECRET || config.PASSPORT_SECRET
+const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID || config.GITHUB_CLIENT_ID
+const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET || config.GITHUB_CLIENT_SECRET
+const GITHUB_CALLBACK_URL = process.env.GITHUB_CALLBACK_URL || config.GITHUB_CALLBACK_URL
 
 const localOptions = { usernameField: 'email' }
 
@@ -44,5 +48,18 @@ const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
     })
 })
 
+const gitHubLogin = new GitHubStrategy({
+    clientID: GITHUB_CLIENT_ID,
+    clientSecret: GITHUB_CLIENT_SECRET,
+    callbackURL: GITHUB_CALLBACK_URL
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ githubId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+)
+
 passport.use(jwtLogin)
 passport.use(localLogin)
+passport.use(gitHubLogin)

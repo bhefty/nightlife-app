@@ -91,7 +91,7 @@ export const fetchUserProfile = () => dispatch => {
             dispatch({ type: types.AUTH_USER })
             dispatch({
                 type: types.FETCH_USER_PROFILE,
-                payload: data.profile
+                payload: data
             })
         })
 }
@@ -111,67 +111,68 @@ export const addLocationToProfile = (location) => dispatch => {
     return fetch('/api/auth/savelocation', options)
         .then(response => response.json())
         .then(data => {
+            console.log('data for loc save', data)
             dispatch({
                 type: types.FETCH_USER_PROFILE,
-                payload: data.user
-            })
-        })
-}
-
-export const addBarToUserProfile = (id) => dispatch => {
-    const token = cookie.get('token')
-
-    const options = {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json',
-            'Authorization': token
-        },
-        body: JSON.stringify({ id })
-    }
-
-    return fetch('/api/auth/addbar', options)
-        .then(response => response.json())
-        .then(data => {
-            dispatch({
-                type: types.FETCH_USER_PROFILE,
-                payload: data.user
-            })
-        })
-}
-
-export const removeBarFromUserProfile = (id) => dispatch => {
-    const token = cookie.get('token')
-
-    const options = {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json',
-            'Authorization': token
-        },
-        body: JSON.stringify({ id })
-    }
-
-    return fetch('/api/auth/removebar', options)
-        .then(response => response.json())
-        .then(data => {
-            dispatch({
-                type: types.FETCH_USER_PROFILE,
-                payload: data.user
-            })
-        })
-}
-
-export const protectedTest = () => dispatch => {
-    return fetch('/api/auth/dashboard', { method: 'GET', headers: { 'Authorization': cookie.get('token') } })
-        .then(response => response.json())
-        .then(data => {
-            dispatch({
-                type: types.PROTECTED_TEST,
                 payload: data
             })
         })
-        .catch(error => {
-            errorHandler(dispatch, error.response, types.AUTH_ERROR)
-        })
 }
+
+// export const addBarToUserProfile = (id) => dispatch => {
+//     const token = cookie.get('token')
+
+//     const options = {
+//         method: 'POST',
+//         headers: {
+//             'content-type': 'application/json',
+//             'Authorization': token
+//         },
+//         body: JSON.stringify({ id })
+//     }
+
+//     return fetch('/api/auth/addbar', options)
+//         .then(response => response.json())
+//         .then(data => {
+//             dispatch({
+//                 type: types.FETCH_USER_PROFILE,
+//                 payload: data.user
+//             })
+//         })
+// }
+
+// export const removeBarFromUserProfile = (id) => dispatch => {
+//     const token = cookie.get('token')
+
+//     const options = {
+//         method: 'POST',
+//         headers: {
+//             'content-type': 'application/json',
+//             'Authorization': token
+//         },
+//         body: JSON.stringify({ id })
+//     }
+
+//     return fetch('/api/auth/removebar', options)
+//         .then(response => response.json())
+//         .then(data => {
+//             dispatch({
+//                 type: types.FETCH_USER_PROFILE,
+//                 payload: data.user
+//             })
+//         })
+// }
+
+// export const protectedTest = () => dispatch => {
+//     return fetch('/api/auth/dashboard', { method: 'GET', headers: { 'Authorization': cookie.get('token') } })
+//         .then(response => response.json())
+//         .then(data => {
+//             dispatch({
+//                 type: types.PROTECTED_TEST,
+//                 payload: data
+//             })
+//         })
+//         .catch(error => {
+//             errorHandler(dispatch, error.response, types.AUTH_ERROR)
+//         })
+// }

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
+const ObjectId = require('mongodb').ObjectId
 
 const Bar = require('../models/bar');
 
@@ -17,7 +18,10 @@ router.get('/', (req, res) => {
 router.put('/inc/:id', (req, res) => {
     Bar.update(
         { bar_id: req.params.id, numAttendees: {$gte: 0} },
-        { $inc: { numAttendees: 1 }},
+        { 
+            $inc: { numAttendees: 1 },
+            $push: { usersAttending: req.body.user_id }
+        },
         { upsert: true, setDefaultsOnInsert: true }, (err, bar) => {
             if (err) res.send(err)
             res.json({ message: 'Bar attendees increased!', bar })
@@ -28,7 +32,10 @@ router.put('/inc/:id', (req, res) => {
 router.put('/dec/:id', (req, res) => {
     Bar.update(
         { bar_id: req.params.id, numAttendees: {$gte: 1} },
-        { $inc: { numAttendees: -1 }},
+        { 
+            $inc: { numAttendees: -1 },
+            $pull: { usersAttending: req.body.user_id }
+        },
         (err, bar) => {
             if (err) res.send(err)
             if (bar.n === 0) {

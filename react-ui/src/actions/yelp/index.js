@@ -74,24 +74,25 @@ export const receiveDecreaseNumAttendees = (id, attendeesArray) => ({
     active: attendeesArray
 })
 
-export const putIncreaseNumAttendees = id => dispatch => {
-    dispatch(requestIncreaseNumAttendees(id))
-    return fetch(`/api/bars/inc/${id}`, {method: 'PUT'})
+export const putIncreaseNumAttendees = (bar_id, user_id) => dispatch => {
+    console.log('user', user_id)
+    dispatch(requestIncreaseNumAttendees(bar_id))
+    return fetch(`/api/bars/inc/${bar_id}`, {method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify({user_id}) })
         .then(response => response.json())
         .then(attendeesArray => {
-            dispatch(receiveIncreaseNumAttendees(id, attendeesArray))
+            dispatch(receiveIncreaseNumAttendees(bar_id, attendeesArray))
         })
         .catch(() => {
             dispatch({ type: REQUEST_INCREASE_NUM_ATTENDEES_FAILURE})
         })
 }
 
-export const putDecreaseNumAttendees = id => dispatch => {
-    dispatch(requestDecreaseNumAttendees(id))
-    return fetch(`/api/bars/dec/${id}`, {method: 'PUT'})
+export const putDecreaseNumAttendees = (bar_id, user_id) => dispatch => {
+    dispatch(requestDecreaseNumAttendees(bar_id))
+    return fetch(`/api/bars/dec/${bar_id}`, {method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify({user_id}) })
         .then(response => response.json())
         .then(attendeesArray => {
-            dispatch(receiveDecreaseNumAttendees(id, attendeesArray))
+            dispatch(receiveDecreaseNumAttendees(bar_id, attendeesArray))
         })
         .catch(() => {
             dispatch({ type: REQUEST_DECREASE_NUM_ATTENDEES_FAILURE})

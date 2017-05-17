@@ -4,7 +4,7 @@ import scrollToComponent from 'react-scroll-to-component'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { selectLocation, fetchBarsIfNeeded, invalidateLocation, fetchNumAttendees, putIncreaseNumAttendees, putDecreaseNumAttendees } from '../../actions/yelp'
-import { fetchUserProfile, addBarToUserProfile, removeBarFromUserProfile, addLocationToProfile } from '../../actions/auth'
+import { fetchUserProfile, addLocationToProfile } from '../../actions/auth'
 import SearchBar from '../../components/SearchBar';
 import Placeholder from './components/Placeholder'
 import Loading from './components/Loading'
@@ -32,10 +32,10 @@ class Bars extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.profile.lastLocation) {
-            if (nextProps.profile.lastLocation.length !== 0 && this.state.initSearch) {
-                const { dispatch, selectedLocation, profile } = nextProps
-                dispatch(selectLocation(profile.lastLocation))
+        if (nextProps.user.profile.lastLocation) {
+            if (nextProps.user.profile.lastLocation.length !== 0 && this.state.initSearch) {
+                const { dispatch, selectedLocation, user } = nextProps
+                dispatch(selectLocation(user.profile.lastLocation))
                 dispatch(invalidateLocation(selectedLocation))
                 this.setState({ initSearch: false })
             }
@@ -58,17 +58,19 @@ class Bars extends Component {
         return (filteredAttendees.length > 0) ? filteredAttendees[0].numAttendees : 0
     }
 
-    handleAttendance = (id) => {
-        const { dispatch, selectedLocation, profile } = this.props
+    handleAttendance = (bar_id) => {
+        const { dispatch, selectedLocation, user } = this.props
         dispatch(fetchUserProfile())
-        const barAttendedPosition = profile.barsAttending.map(bar => bar.bar_id).indexOf(id)
+        const isUserGoing = this.props.active.map(active_bar => {
+            if (active_bar.usersAttending === user.user_id) {
+                return active_bar.bar_id
+            } else { return null }
+        }).indexOf(bar_id)
         
-        if (barAttendedPosition === -1) {
-            dispatch(addBarToUserProfile(id))
-            dispatch(putIncreaseNumAttendees(id))
+        if (isUserGoing === -1) {
+            dispatch(putIncreaseNumAttendees(bar_id, user.user_id))
         } else {
-            dispatch(removeBarFromUserProfile(id))
-            dispatch(putDecreaseNumAttendees(id))
+            dispatch(putDecreaseNumAttendees(bar_id, user.user_id))
         }
         
         dispatch(fetchNumAttendees(selectedLocation))
@@ -100,9 +102,14 @@ class Bars extends Component {
                                 <div className='cards'>
                                     {bars.map((bar, i) => {
                                         if (this.props.authenticated) {
-                                            const barAttendedPosition = this.props.profile.barsAttending.map(bar => bar.bar_id).indexOf(bar.id)
-                                            const buttonText = (barAttendedPosition === -1) ? 'Count me in!' : 'Sorry, can\'t go!'
-                                            const buttonColor = (barAttendedPosition === -1) ? 'btn-success' : 'btn-danger'
+                                            const isUserGoing = this.props.active.map(active_bar =>{
+                                                if (active_bar.usersAttending === this.props.user.user_id) {
+                                                    return active_bar.bar_id
+                                                } else { return null }
+                                            }).indexOf(bar.id)
+
+                                            const buttonText = (isUserGoing === -1) ? 'Count me in!' : 'Sorry, can\'t go!'
+                                            const buttonColor = (isUserGoing === -1) ? 'btn-success' : 'btn-danger'
                                        
                                             return (
                                                 <BarItem 
@@ -157,14 +164,14 @@ const mapStateToProps = state => {
         activeBars: []
     }
 
-    const { authenticated, profile } = state.auth
+    const { authenticated, user } = state.auth
     return {
         selectedLocation,
         bars,
         active,
         isFetching,
         authenticated,
-        profile
+        user
     }
 }
 

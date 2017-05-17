@@ -13,7 +13,7 @@ router.get('/test', (req, res) => {
 })
 
 router.get('/dashboard', requireAuth, (req, res) => {
-    res.json({ profile: req.user.profile })
+    res.json({ user_id: req.user._id, profile: req.user.profile })
 })
 
  // Registration route

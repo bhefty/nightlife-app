@@ -35,7 +35,7 @@ exports.saveLocation = (req, res, next) => {
         (err, user) => {
             if (err) return next(err)
 
-            res.status(200).json({ user: user.profile })
+            res.status(200).json({ user_id: req.user._id, profile: user.profile })
         }
     )
 }

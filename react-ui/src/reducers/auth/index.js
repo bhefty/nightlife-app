@@ -1,6 +1,6 @@
 import * as types from '../../actions/types'
 
-const INITIAL_STATE = { error: '', message: '', content: '', authenticated: false, profile: {} }
+const INITIAL_STATE = { error: '', message: '', authenticated: false, user: { profile: {} } }
 
 export default function (state = INITIAL_STATE, action) {
     switch(action.type) {
@@ -22,15 +22,10 @@ export default function (state = INITIAL_STATE, action) {
                 ...state,
                 error: action.payload
             }
-        case types.PROTECTED_TEST:
-            return {
-                ...state,
-                content: action.payload
-            }
         case types.FETCH_USER_PROFILE:
             return {
                 ...state,
-                profile: action.payload
+                user: action.payload
             }
         default:
             return {

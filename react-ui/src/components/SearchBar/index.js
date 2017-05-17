@@ -34,7 +34,6 @@ class SearchBar extends Component {
         }
         
         this.setState({searchValue: ''})
-        this.props.onSubmit()
     }
 
     render() {
